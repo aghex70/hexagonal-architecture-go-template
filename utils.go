@@ -39,8 +39,8 @@ func scanStringCastBoolean(prompt, defaultValue string) (bool, error) {
 
 	switch strings.ToLower(value) {
 	case "":
-		return defaultValue == DEFAULT_ACTIVE, nil
-	case DEFAULT_ACTIVE:
+		return defaultValue == DefaultActive, nil
+	case DefaultActive:
 		return true, nil
 	default:
 		return false, nil

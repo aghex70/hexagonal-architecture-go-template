@@ -1,82 +1,82 @@
 package hexagonal_architecture_go_template
 
 func main() {
-	projectName, err := scanString(SCAN_PROJECT_NAME)
+	projectName, err := scanString(ScanProjectName)
 	if err != nil {
 		panic(err)
 	}
 
-	version, err := scanStringWithDefault(SCAN_VERSION, DEFAULT_VERSION)
+	version, err := scanStringWithDefault(ScanVersion, DefaultVersion)
 	if err != nil {
 		panic(err)
 	}
 
-	description, err := scanStringWithDefault(SCAN_DESCRIPTION, DEFAULT_DESCRIPTION)
+	description, err := scanStringWithDefault(ScanDescription, DefaultDescription)
 	if err != nil {
 		panic(err)
 	}
 
-	frontend, err := scanStringCastBoolean(SCAN_REACT, DEFAULT_ACTIVE)
+	frontend, err := scanStringCastBoolean(ScanReact, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	sequel, err := scanStringCastBoolean(SCAN_SQL_DATABASE, DEFAULT_ACTIVE)
+	sequel, err := scanStringCastBoolean(ScanSqlDatabase, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	mysql, err := scanStringCastBoolean(SCAN_MYSQL, DEFAULT_INACTIVE)
+	mysql, err := scanStringCastBoolean(ScanMysql, DefaultInactive)
 	if err != nil {
 		panic(err)
 	}
 
-	postgres, err := scanStringCastBoolean(SCAN_POSTGRES, DEFAULT_ACTIVE)
+	postgres, err := scanStringCastBoolean(ScanPostgres, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	nosequel, err := scanStringCastBoolean(SCAN_NO_SQL_DATABASE, DEFAULT_ACTIVE)
+	nosequel, err := scanStringCastBoolean(ScanNoSqlDatabase, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	mongodb, err := scanStringCastBoolean(SCAN_MONGODB, DEFAULT_ACTIVE)
+	mongodb, err := scanStringCastBoolean(ScanMongodb, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	redis, err := scanStringCastBoolean(SCAN_REDIS, DEFAULT_ACTIVE)
+	redis, err := scanStringCastBoolean(ScanRedis, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	nginx, err := scanStringCastBoolean(SCAN_REVERSE_PROXY, DEFAULT_INACTIVE)
+	nginx, err := scanStringCastBoolean(ScanReverseProxy, DefaultInactive)
 	if err != nil {
 		panic(err)
 	}
 
-	api, err := scanStringCastBoolean(SCAN_API, DEFAULT_ACTIVE)
+	api, err := scanStringCastBoolean(ScanApi, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	rest, err := scanStringCastBoolean(SCAN_REST, DEFAULT_ACTIVE)
+	rest, err := scanStringCastBoolean(ScanRest, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	grpc, err := scanStringCastBoolean(SCAN_GRPC, DEFAULT_ACTIVE)
+	grpc, err := scanStringCastBoolean(ScanGrpc, DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	graphql, err := scanStringCastBoolean(SCAN_GRAPHQL, DEFAULT_INACTIVE)
+	graphql, err := scanStringCastBoolean(ScanGraphql, DefaultInactive)
 	if err != nil {
 		panic(err)
 	}
 
-	entities, err := scanMultipleStrings(SCAN_ENTITIES)
+	entities, err := scanMultipleStrings(ScanEntities)
 	if err != nil {
 		panic(err)
 	}
