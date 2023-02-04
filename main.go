@@ -1,6 +1,7 @@
 package hexagonal_architecture_go_template
 
 import (
+	"github.com/aghex70/hexagonal-architecture-go-template/templates"
 	"os"
 )
 
@@ -23,7 +24,7 @@ func main() {
 	}
 
 	projectPath := generateProjectPath(projectBasePath, projectName)
-	err = createProject(projectPath)
+	err = createDirectory(projectPath)
 
 	version, err := scanStringWithDefault(ScanVersion, DefaultVersion)
 	if err != nil {
@@ -100,4 +101,19 @@ func main() {
 		panic(err)
 	}
 
+	err = generateStubs(projectPath, BackendDirectory)
+	if len(entities) > 0 {
+
+	}
+	if frontend == true {
+		err := generateStubs(projectPath, FrontendDirectory)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	err = generateFile(projectPath, BackendDirectory, entities[0], templates.DomainTemplate, templates.DomainData)
+	if err != nil {
+		panic(err)
+	}
 }

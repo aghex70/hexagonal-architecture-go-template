@@ -2,8 +2,10 @@ package hexagonal_architecture_go_template
 
 import (
 	"fmt"
+	"github.com/satori/go.uuid"
 	"os"
 	"strings"
+	"text/template"
 )
 
 func scanString(prompt string) (string, error) {
@@ -79,8 +81,8 @@ func projectExists(path string) (bool, error) {
 	}
 }
 
-func createProject(path string) error {
-	err := os.Mkdir(path, 0755)
+func createDirectory(path string) error {
+	err := os.MkdirAll(path, 0755)
 	if err != nil {
 		return err
 	}
@@ -90,4 +92,47 @@ func createProject(path string) error {
 func generateProjectPath(pbp, pn string) string {
 	projectPath := fmt.Sprintf("%s/%s/", pbp, pn)
 	return projectPath
+}
+
+func generateStubs(pp, side string) error {
+	baseDirectories := []string{
+		DomainDirectory,
+		PortsDirectory,
+		ServicesDirectory,
+		HandlersDirectory,
+		RepositoriesDirectory,
+	}
+
+	for _, d := range baseDirectories {
+		bd := pp + side + d
+		err := createDirectory(bd)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func generateFile(path, side, name, t string, data interface{}) error {
+	f, err := os.Create(side + path + name)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	tmpl, err := template.New(GenerateUUID()).Parse(t)
+	if err != nil {
+		panic(err)
+	}
+	err = tmpl.Execute(os.Stdout, data)
+	if err != nil {
+		panic(err)
+	}
+
+	return nil
+}
+
+func GenerateUUID() string {
+	u, _ := uuid.NewV4()
+	return u.String()
 }
