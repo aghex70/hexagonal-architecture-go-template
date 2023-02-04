@@ -2,6 +2,7 @@ package hexagonal_architecture_go_template
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -60,4 +61,33 @@ func scanMultipleStrings(prompt string) ([]string, error) {
 
 	fmt.Println()
 	return values, nil
+}
+
+func projectExists(path string) (bool, error) {
+	f, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	if f.IsDir() {
+		return true, nil
+	} else {
+		return true, ProjectFileError
+	}
+}
+
+func createProject(path string) error {
+	err := os.Mkdir(path, 0755)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func generateProjectPath(pbp, pn string) string {
+	projectPath := fmt.Sprintf("%s/%s/", pbp, pn)
+	return projectPath
 }

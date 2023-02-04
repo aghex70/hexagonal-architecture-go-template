@@ -1,10 +1,29 @@
 package hexagonal_architecture_go_template
 
+import (
+	"os"
+)
+
+var projectBasePath string
+
 func main() {
+	projectBasePath := os.Args[1]
+	pe, err := projectExists(projectBasePath)
+	if err != nil {
+		panic(err)
+	}
+
+	if pe == true {
+		panic(ProjectFileError)
+	}
+
 	projectName, err := scanString(ScanProjectName)
 	if err != nil {
 		panic(err)
 	}
+
+	projectPath := generateProjectPath(projectBasePath, projectName)
+	err = createProject(projectPath)
 
 	version, err := scanStringWithDefault(ScanVersion, DefaultVersion)
 	if err != nil {
