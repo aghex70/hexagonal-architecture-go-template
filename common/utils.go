@@ -94,7 +94,7 @@ func CreateDirectory(path string) error {
 }
 
 func GenerateProjectPath(pbp, pn string) string {
-	projectPath := fmt.Sprintf("%s/%s/", pbp, pn)
+	projectPath := fmt.Sprintf("%s%s/", pbp, pn)
 	return projectPath
 }
 
@@ -150,20 +150,28 @@ func GenerateMultiPartsFile(basePath, side, path, name, ts, te string, data inte
 	}
 	defer f.Close()
 
-	tmpl, err := template.New(GenerateUUID()).Parse(ts)
-	if err != nil {
-		panic(err)
-	}
+	switch v := data.(type) {
+	case []templates.DomainData:
+		for _, value := range v {
+			tmpl, err := template.New(GenerateUUID()).Parse(ts)
+			if err != nil {
+				panic(err)
+			}
 
-	var b bytes.Buffer
-	err = tmpl.Execute(&b, data)
-	if err != nil {
-		panic(err)
-	}
+			var b bytes.Buffer
+			err = tmpl.Execute(&b, value)
+			if err != nil {
+				panic(err)
+			}
 
-	_, err = io.Copy(f, &b)
-	if err != nil {
-		panic(err)
+			_, err = io.Copy(f, &b)
+			if err != nil {
+				panic(err)
+			}
+			break
+		}
+	default:
+		fmt.Println("unexpected type")
 	}
 
 	switch v := data.(type) {

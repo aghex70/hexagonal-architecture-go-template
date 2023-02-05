@@ -8,6 +8,15 @@ import (
 
 func main() {
 	projectBasePath := os.Args[1]
+	//pe, err := common.ProjectExists(projectBasePath)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//
+	//if pe == true {
+	//	panic(common.ProjectFileError)
+	//}
+
 	projectModule, err := common.ScanString(common.ScanProjectModule)
 	if err != nil {
 		panic(err)
@@ -133,10 +142,10 @@ func main() {
 			panic(err)
 		}
 
-		//err = common.GenerateMultiPartsFile(projectPath, common.BackendDirectory, common.PortsDirectory, common.ServicesFileName, templates.ServicesStartTemplate, templates.ServicesEntitiesTemplate, es)
-		//if err != nil {
-		//	panic(err)
-		//}
+		err = common.GenerateMultiPartsFile(projectPath, common.BackendDirectory, common.PortsDirectory, common.ServicesFileName, templates.ServicesStartTemplate, templates.ServicesEntitiesTemplate, es)
+		if err != nil {
+			panic(err)
+		}
 	}
 	//if frontend == true {
 	//	err := common.GenerateStubs(projectPath, common.FrontendDirectory)
