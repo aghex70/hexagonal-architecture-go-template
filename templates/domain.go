@@ -2,6 +2,7 @@ package templates
 
 type DomainData struct {
 	Entity string
+	Module string
 }
 
 var DomainTemplate = `package domain

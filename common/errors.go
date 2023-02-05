@@ -1,4 +1,4 @@
-package hexagonal_architecture_go_template
+package common
 
 import "errors"
 

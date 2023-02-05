@@ -1,14 +1,20 @@
 package templates
 
-var requestsTemplate = `package ports
+var RequestsStartTemplate = `package ports
 
-type Create{{.Entity}}Request struct {
-	CreationDate       time.Time ` + "`json:\"creationDate\"`" + `
+import "time"
+
+`
+
+var RequestsEntitiesTemplate = `type Create{{.Entity}}Request struct {
+	CreationDate    time.Time 	` + "`json:\"creationDate\"`" + `
+	Name       		string 		` + "`json:\"name\"`" + `
 }
 
 type Update{{.Entity}}Request struct {
-	Id					int  ` + "`json:\"id\"`" + `
-	UpdateDate        	time.Time ` + "`json:\"updateDate\"`" + `
+	Id					int  		` + "`json:\"id\"`" + `
+	Name       			string 		` + "`json:\"name\"`" + `
+	UpdateDate        	time.Time 	` + "`json:\"updateDate\"`" + `
 }
 
 type Get{{.Entity}}Request struct {
@@ -18,4 +24,5 @@ type Get{{.Entity}}Request struct {
 type Delete{{.Entity}}Request struct {
 	Id	int  ` + "`json:\"id\"`" + `
 }
+
 `

@@ -1,5 +1,6 @@
-package hexagonal_architecture_go_template
+package common
 
+const ScanProjectModule = "Project module (cannot be empty)"
 const ScanProjectName = "Project name (cannot be empty)"
 const ScanVersion = "Version [0.1.0]"
 const DefaultVersion = "0.1.0"
@@ -27,3 +28,8 @@ const PortsDirectory = "internal/core/ports/"
 const ServicesDirectory = "internal/core/services/"
 const HandlersDirectory = "internal/handlers/"
 const RepositoriesDirectory = "internal/repositories/"
+const CommandDirectory = "cmd/"
+const GolangFileExtension = ".go"
+const RequestsFileName = "requests"
+const ResponsesFileName = "responses"
+const ServicesFileName = "services"
