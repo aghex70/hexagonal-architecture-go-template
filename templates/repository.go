@@ -1,6 +1,6 @@
 package templates
 
-var repositoryTemplate = `package {{.Entity}}
+var RepositoryTemplate = `package {{.Entity}}
 
 import (
 	"context"
@@ -20,6 +20,7 @@ type {{.Entity}}GormRepository struct {
 
 type {{.Entity}} struct {
 	Id            int        ` + "`gorm:\"primaryKey;column:id\"`" + `
+	Name          string     ` + "`gorm:\"column:name\"`" + `
 	CreationDate  time.Time  ` + "`gorm:\"column:creation_date;autoCreateTime\"`" + `
 	UpdateDate    time.Time  ` + "`gorm:\"column:update_date\"`" + `
 }
@@ -46,6 +47,7 @@ func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, e domain.{{.Ent
 	ne := fromDto(e)
 	result := gr.DB.Model(&ne).Where({{.Entity}}{Id: ne.Id}).Updates(map[string]interface{}{
 		"update_date": ne.UpdateDate,
+		"name": ne.Name,
 	})
 
 	if result.RowsAffected == 0 {
@@ -59,7 +61,7 @@ func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, e domain.{{.Ent
 }
 
 func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domain.{{.Entity}}, error) {
-	var ne {{.Entity}
+	var ne {{.Entity}}
 	result := gr.DB.Where(&{{.Entity}}{Id: id}).Find(&ne).First()
 	if result.Error != nil {
 		return domain.{{.Entity}}Info{}, result.Error
@@ -104,6 +106,7 @@ func New{{.Entity}}GormRepository(db *gorm.DB) (*{{.Entity}}GormRepository, erro
 
 func (td {{.Entity}}) ToDto() domain.{{.Entity}} {
 	return domain.{{.Entity}}{
+		Name: 		  td.Name,
 		CreationDate: td.CreationDate,
 		Id:           td.Id,
 		UpdateDate:   td.UpdateDate,
@@ -112,6 +115,7 @@ func (td {{.Entity}}) ToDto() domain.{{.Entity}} {
 
 func fromDto(td domain.{{.Entity}}) {{.Entity}} {
 	return {{.Entity}}{
+		Name: 		  td.Name,
 		CreationDate: td.CreationDate,
 		Id:           td.Id,
 		UpdateDate:   td.UpdateDate,
