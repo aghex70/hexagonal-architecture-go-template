@@ -6,7 +6,7 @@ import "time"
 
 `
 
-var RequestsEntitiesTemplate = `type Create{{.Entity}}Request struct {
+var RequestsRepeatTemplate = `type Create{{.Entity}}Request struct {
 	CreationDate    time.Time 	` + "`json:\"creationDate\"`" + `
 	Name       		string 		` + "`json:\"name\"`" + `
 }

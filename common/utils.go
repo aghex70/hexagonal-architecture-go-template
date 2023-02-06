@@ -117,87 +117,67 @@ func GenerateStubs(pp, side string) error {
 	return nil
 }
 
-func GenerateFile(basePath, side, path, name, t string, data interface{}) error {
-	route := basePath + side + path + strings.ToLower(name) + GolangFileExtension
-	f, err := os.Create(route)
+type FileConfiguration struct {
+	Entity          string
+	TemplateStart   string
+	TemplateRepeat  string
+	TemplateEnd     string
+	TemplateContext templates.DomainData
+	Repeat          bool
+	RepeatEntities  []string
+}
+
+func GenerateFile(path, extension string, data FileConfiguration) error {
+	f, err := os.Create(path + extension)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	tmpl, err := template.New(GenerateUUID()).Parse(t)
+	err = executeTemplate(f, data.TemplateStart, data.TemplateContext)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	var b bytes.Buffer
-	err = tmpl.Execute(&b, data)
-	if err != nil {
-		panic(err)
+	if data.Repeat {
+		for _, entity := range data.RepeatEntities {
+			templateContext := data.TemplateContext
+			if templateContext.Entity == "" {
+				templateContext.Entity = entity
+				templateContext.LowerEntity = strings.ToLower(entity)
+			}
+
+			err = executeTemplate(f, data.TemplateRepeat, templateContext)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
-	_, err = io.Copy(f, &b)
-	if err != nil {
-		panic(err)
+	if data.TemplateEnd != "" {
+		err = executeTemplate(f, data.TemplateEnd, data.TemplateContext)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func GenerateMultiPartsFile(basePath, side, path, name, ts, te string, data interface{}) error {
-	f, err := os.Create(basePath + side + path + strings.ToLower(name) + GolangFileExtension)
+func executeTemplate(w io.Writer, ts string, data interface{}) error {
+	tmpl, err := template.New(GenerateUUID()).Parse(ts)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
 
-	switch v := data.(type) {
-	case []templates.DomainData:
-		for _, value := range v {
-			tmpl, err := template.New(GenerateUUID()).Parse(ts)
-			if err != nil {
-				panic(err)
-			}
-
-			var b bytes.Buffer
-			err = tmpl.Execute(&b, value)
-			if err != nil {
-				panic(err)
-			}
-
-			_, err = io.Copy(f, &b)
-			if err != nil {
-				panic(err)
-			}
-			break
-		}
-	default:
-		fmt.Println("unexpected type")
+	var buf bytes.Buffer
+	err = tmpl.Execute(&buf, data)
+	if err != nil {
+		return err
 	}
 
-	switch v := data.(type) {
-	case []templates.DomainData:
-		for _, value := range v {
-			tmpl, err := template.New(GenerateUUID()).Parse(te)
-			if err != nil {
-				panic(err)
-			}
-
-			var b bytes.Buffer
-			err = tmpl.Execute(&b, value)
-			if err != nil {
-				panic(err)
-			}
-
-			_, err = io.Copy(f, &b)
-			if err != nil {
-				panic(err)
-			}
-		}
-	default:
-		fmt.Println("unexpected type")
-	}
-	return nil
+	_, err = io.Copy(w, &buf)
+	return err
 }
 
 func GenerateUUID() string {

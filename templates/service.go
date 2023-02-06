@@ -1,9 +1,15 @@
 package templates
 
-var serviceTemplate = `package {{.Entity}}
+var ServiceStartTemplate = `package {{.LowerEntity}}
 
 import (
 	"context"
+	"{{.Module}}/internal/core/domain"
+	"{{.Module}}/internal/core/ports"
+	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
+`
+
+var ServiceEndTemplate = `	"{{.Module}}/server"
 	"log"
 	"net/http"
 	"strconv"
@@ -12,14 +18,15 @@ import (
 
 type {{.Entity}}Service struct {
 	logger                 	*log.Logger
-	{{.Entity}}Repository   *{{.Entity}}.{{.Entity}}GormRepository
+	{{.LowerEntity}}Repository   *{{.Entity}}.{{.Entity}}GormRepository
 }
 
 func (s {{.Entity}}Service) Create(ctx context.Context, r *http.Request, req ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
 	e := domain.{{.Entity}}{
 		CreationDate: time.Now(),
+		Name: 		  req.Name,
 	}
-	ne, err := s.{{.Entity}}Repository.Create(ctx, e)
+	ne, err := s.{{.LowerEntity}}Repository.Create(ctx, e)
 	if err != nil {
 		return domain.{{.Entity}}{}, err
 	}
@@ -31,8 +38,9 @@ func (s {{.Entity}}Service) Update(ctx context.Context, r *http.Request, req por
 	e := domain.{{.Entity}}{
 		Id:                 int(req.{{.Entity}}Id),
 		UpdateDate: 		time.Now(),
+		Name: 		  		req.Name,
 	}
-	err := s.{{.Entity}}Repository.Update(ctx, e)
+	err := s.{{.LowerEntity}}Repository.Update(ctx, e)
 	if err != nil {
 		return err
 	}
@@ -40,7 +48,7 @@ func (s {{.Entity}}Service) Update(ctx context.Context, r *http.Request, req por
 }
 
 func (s {{.Entity}}Service) Get(ctx context.Context, r *http.Request, req ports.Get{{.Entity}}Request) (domain.{{.Entity}}, error) {
-	e, err := s.{{.Entity}}Repository.GetById(ctx, req.Id)
+	e, err := s.{{.LowerEntity}}Repository.GetById(ctx, req.Id)
 	if err != nil {
 		return domain.{{.Entity}}{}, err
 	}
@@ -48,7 +56,7 @@ func (s {{.Entity}}Service) Get(ctx context.Context, r *http.Request, req ports.
 }
 
 func (s {{.Entity}}Service) Delete(ctx context.Context, r *http.Request, req ports.Delete{{.Entity}}Request) error {
-	err := s.{{.Entity}}Repository.Delete(ctx, int(req.{{.Entity}}Id), int(userId))
+	err := s.{{.LowerEntity}}Repository.Delete(ctx, int(req.{{.Entity}}Id), int(userId))
 	if err != nil {
 		return err
 	}
@@ -56,7 +64,7 @@ func (s {{.Entity}}Service) Delete(ctx context.Context, r *http.Request, req por
 }
 
 func (s {{.Entity}}Service) List(ctx context.Context, r *http.Request) ([]domain.{{.Entity}}, error) {
-	es, err := s.{{.Entity}}Repository.List(ctx)
+	es, err := s.{{.LowerEntity}}Repository.List(ctx)
 	if err != nil {
 		return []domain.{{.Entity}}{}, err
 	}
@@ -66,7 +74,7 @@ func (s {{.Entity}}Service) List(ctx context.Context, r *http.Request) ([]domain
 func New{{.Entity}}Service(er *{{.Entity}}.{{.Entity}}GormRepository, logger *log.Logger) {{.Entity}}Service {
 	return {{.Entity}}Service{
 		logger:                 	logger,
-		{{.Entity}}Repository:      er,
+		{{.LowerEntity}}Repository:      er,
 	}
 }
 `

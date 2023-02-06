@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"{{.Module}}/internal/core/domain"
 	"gorm.io/gorm"
 	"log"
 	"strconv"
@@ -31,7 +32,7 @@ type Tabler interface {
 
 // TableName overrides the table name
 func ({{.Entity}}) TableName() string {
-	return "{{.ProjectName}}_{{.Entity}}s"
+	return "{{.ProjectName}}_{{.LowerEntity}}s"
 }
 
 func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, e domain.{{.Entity}}) error {
