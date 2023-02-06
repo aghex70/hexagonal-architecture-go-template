@@ -6,6 +6,7 @@ import (
 	"github.com/aghex70/hexagonal-architecture-go-template/templates"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -229,6 +230,22 @@ func main() {
 
 		servicesPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.ServicesFileName
 		err = common.GenerateFile(servicesPath, common.GolangFileExtension, servicesFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
+
+		// Migrations
+		migrationsFileConfiguration := common.FileConfiguration{
+			TemplateStart:   templates.MigrationStartTemplate,
+			TemplateRepeat:  templates.MigrationRepeatTemplate,
+			TemplateContext: tc,
+			Repeat:          true,
+			RepeatEntities:  entities,
+		}
+
+		migrationsFileName := fmt.Sprintf("%s_%s", time.Now().Format("20060102150405"), "initial")
+		migrationsPath := projectPath + common.BackendDirectory + common.MigrationsDirectory + migrationsFileName
+		err = common.GenerateFile(migrationsPath, common.SQLFileExtension, migrationsFileConfiguration)
 		if err != nil {
 			panic(err)
 		}

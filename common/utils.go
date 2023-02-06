@@ -105,6 +105,11 @@ func GenerateStubs(pp, side string) error {
 		ServicesDirectory,
 		HandlersDirectory,
 		RepositoriesDirectory,
+		HandlersDirectory,
+		CommandDirectory,
+		HandlersDirectory,
+		MigrationsDirectory,
+		ConfigDirectory,
 	}
 
 	for _, d := range baseDirectories {
