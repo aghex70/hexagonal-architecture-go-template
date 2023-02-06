@@ -4,6 +4,7 @@ import (
 	"github.com/aghex70/hexagonal-architecture-go-template/common"
 	"github.com/aghex70/hexagonal-architecture-go-template/templates"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -126,11 +127,27 @@ func main() {
 	if len(entities) > 0 {
 		var es []templates.DomainData
 		for _, e := range entities {
+			le := strings.ToLower(e)
 			entity := templates.DomainData{
-				Entity: e,
-				Module: projectModule,
+				Entity:      e,
+				LowerEntity: le,
+				Module:      projectModule,
+				ProjectName: projectName,
 			}
+			// Domain
 			err = common.GenerateFile(projectPath, common.BackendDirectory, common.DomainDirectory, e, templates.DomainTemplate, entity)
+			if err != nil {
+				panic(err)
+			}
+
+			repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le
+			err = common.CreateDirectory(repositoryPath)
+			if err != nil {
+				panic(err)
+			}
+
+			// Repositories
+			err = common.GenerateFile(projectPath, common.BackendDirectory, common.RepositoriesDirectory+le+"/", common.GormFileName, templates.RepositoryTemplate, entity)
 			if err != nil {
 				panic(err)
 			}

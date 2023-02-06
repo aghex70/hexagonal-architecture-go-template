@@ -118,7 +118,8 @@ func GenerateStubs(pp, side string) error {
 }
 
 func GenerateFile(basePath, side, path, name, t string, data interface{}) error {
-	f, err := os.Create(basePath + side + path + strings.ToLower(name) + GolangFileExtension)
+	route := basePath + side + path + strings.ToLower(name) + GolangFileExtension
+	f, err := os.Create(route)
 	if err != nil {
 		return err
 	}

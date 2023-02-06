@@ -1,6 +1,6 @@
 package templates
 
-var RepositoryTemplate = `package {{.Entity}}
+var RepositoryTemplate = `package {{.LowerEntity}}
 
 import (
 	"context"
