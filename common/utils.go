@@ -122,47 +122,33 @@ func GenerateStubs(pp, side string) error {
 	return nil
 }
 
-type FileConfiguration struct {
-	Entity          string
-	TemplateStart   string
-	TemplateRepeat  string
-	TemplateEnd     string
-	TemplateContext templates.DomainData
-	Repeat          bool
-	RepeatEntities  []string
-}
-
-func GenerateFile(path, extension string, data FileConfiguration) error {
+func GenerateFile(path, extension string, data []templates.FileConfiguration) error {
 	f, err := os.Create(path + extension)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	err = executeTemplate(f, data.TemplateStart, data.TemplateContext)
-	if err != nil {
-		return err
-	}
+	for _, d := range data {
+		if d.Repeat {
+			for _, entity := range d.RepeatEntities {
+				templateContext := d.TemplateContext
+				if templateContext.Entity == "" {
+					templateContext.Entity = entity
+					templateContext.LowerEntity = strings.ToLower(entity)
+					templateContext.Initial = string(templateContext.LowerEntity[0])
+				}
 
-	if data.Repeat {
-		for _, entity := range data.RepeatEntities {
-			templateContext := data.TemplateContext
-			if templateContext.Entity == "" {
-				templateContext.Entity = entity
-				templateContext.LowerEntity = strings.ToLower(entity)
+				err = executeTemplate(f, d.Template, templateContext)
+				if err != nil {
+					return err
+				}
 			}
-
-			err = executeTemplate(f, data.TemplateRepeat, templateContext)
+		} else {
+			err = executeTemplate(f, d.Template, d.TemplateContext)
 			if err != nil {
 				return err
 			}
-		}
-	}
-
-	if data.TemplateEnd != "" {
-		err = executeTemplate(f, data.TemplateEnd, data.TemplateContext)
-		if err != nil {
-			return err
 		}
 	}
 

@@ -129,7 +129,7 @@ func main() {
 	if len(entities) > 0 {
 		for _, e := range entities {
 			le := strings.ToLower(e)
-			tc := templates.DomainData{
+			tc := templates.TemplateContext{
 				Entity:      e,
 				LowerEntity: le,
 				Module:      projectModule,
@@ -137,11 +137,7 @@ func main() {
 			}
 			// Domain
 			domainPath := projectPath + common.BackendDirectory + common.DomainDirectory + le
-			fmt.Println("domainPath: ", domainPath)
-			domainFileConfiguration := common.FileConfiguration{
-				TemplateStart:   templates.DomainTemplate,
-				TemplateContext: tc,
-			}
+			domainFileConfiguration := templates.GetDomainFileConfiguration(tc)
 			err = common.GenerateFile(domainPath, common.GolangFileExtension, domainFileConfiguration)
 			if err != nil {
 				panic(err)
@@ -154,10 +150,7 @@ func main() {
 				panic(err)
 			}
 
-			repositoryFileConfiguration := common.FileConfiguration{
-				TemplateStart:   templates.RepositoryTemplate,
-				TemplateContext: tc,
-			}
+			repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
 			err = common.GenerateFile(repositoryPath+"/"+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
 			if err != nil {
 				panic(err)
@@ -170,82 +163,59 @@ func main() {
 				panic(err)
 			}
 
-			serviceFileConfiguration := common.FileConfiguration{
-				TemplateStart:   templates.ServiceStartTemplate,
-				TemplateEnd:     templates.ServiceEndTemplate,
-				TemplateContext: tc,
-			}
-			err = common.GenerateFile(servicePath+"/"+common.ServiceFileName, common.GolangFileExtension, serviceFileConfiguration)
+			serviceFileConfigurations := templates.GetServiceFileConfiguration(tc)
+			err = common.GenerateFile(servicePath+"/"+common.ServiceFileName, common.GolangFileExtension, serviceFileConfigurations)
 			if err != nil {
 				panic(err)
 			}
 
-			serviceTestFileConfiguration := common.FileConfiguration{
-				TemplateStart:   templates.LowerEntityTemplate,
-				TemplateContext: tc,
-			}
+			serviceTestFileConfiguration := templates.GetLowerEntityFileConfiguration(tc)
 			err = common.GenerateFile(servicePath+"/"+common.ServiceTestFileName, common.GolangFileExtension, serviceTestFileConfiguration)
 			if err != nil {
 				panic(err)
 			}
 
-			validatorsFileConfiguration := common.FileConfiguration{
-				TemplateStart:   templates.LowerEntityTemplate,
-				TemplateContext: tc,
-			}
+			validatorsFileConfiguration := templates.GetLowerEntityFileConfiguration(tc)
 			err = common.GenerateFile(servicePath+"/"+common.ServiceValidatorsFileName, common.GolangFileExtension, validatorsFileConfiguration)
 			if err != nil {
 				panic(err)
 			}
 		}
 
-		tc := templates.DomainData{
+		tc := templates.TemplateContext{
 			Module:      projectModule,
 			ProjectName: projectName,
 		}
 
 		// Requests
-		requestsFileConfiguration := common.FileConfiguration{
-			TemplateStart:   templates.RequestsStartTemplate,
-			TemplateRepeat:  templates.RequestsRepeatTemplate,
-			TemplateContext: tc,
-			Repeat:          true,
-			RepeatEntities:  entities,
-		}
-
+		requestsFileConfigurations := templates.GetRequestsFileConfiguration(entities, tc)
 		requestsPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.RequestsFileName
-		err = common.GenerateFile(requestsPath, common.GolangFileExtension, requestsFileConfiguration)
+		err = common.GenerateFile(requestsPath, common.GolangFileExtension, requestsFileConfigurations)
 		if err != nil {
 			panic(err)
 		}
 
 		// Services
-		servicesFileConfiguration := common.FileConfiguration{
-			TemplateStart:   templates.ServicesStartTemplate,
-			TemplateRepeat:  templates.ServicesRepeatTemplate,
-			TemplateContext: tc,
-			Repeat:          true,
-			RepeatEntities:  entities,
-		}
-
+		servicesFileConfigurations := templates.GetServicesFileConfiguration(entities, tc)
 		servicesPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.ServicesFileName
-		err = common.GenerateFile(servicesPath, common.GolangFileExtension, servicesFileConfiguration)
+		err = common.GenerateFile(servicesPath, common.GolangFileExtension, servicesFileConfigurations)
 		if err != nil {
 			panic(err)
 		}
 
 		// Migrations
-		migrationsFileConfiguration := common.FileConfiguration{
-			TemplateStart:   templates.MigrationStartTemplate,
-			TemplateRepeat:  templates.MigrationRepeatTemplate,
-			TemplateContext: tc,
-			Repeat:          true,
-			RepeatEntities:  entities,
-		}
-
+		migrationsFileConfigurations := templates.GetMigrationFileConfiguration(entities, tc)
 		migrationsFileName := fmt.Sprintf("%s_%s", time.Now().Format("20060102150405"), "initial")
 		migrationsPath := projectPath + common.BackendDirectory + common.MigrationsDirectory + migrationsFileName
-		err = common.GenerateFile(migrationsPath, common.SQLFileExtension, migrationsFileConfiguration)
+		err = common.GenerateFile(migrationsPath, common.SQLFileExtension, migrationsFileConfigurations)
+		if err != nil {
+			panic(err)
+		}
+
+		// Serve
+		serveFileConfigurations := templates.GetServeFileConfiguration(entities, tc)
+		servePath := projectPath + common.BackendDirectory + common.CommandDirectory + common.ServeFileName
+		err = common.GenerateFile(servePath, common.GolangFileExtension, serveFileConfigurations)
 		if err != nil {
 			panic(err)
 		}

@@ -1,9 +1,17 @@
 package templates
 
-type EntityData struct {
-	Entity string
+type TemplateContext struct {
+	Entity      string
+	LowerEntity string
+	Initial     string
+	Module      string
+	ProjectName string
 }
 
-type ModuleData struct {
-	Module string
+type FileConfiguration struct {
+	Entity          string
+	Template        string
+	TemplateContext TemplateContext
+	Repeat          bool
+	RepeatEntities  []string
 }

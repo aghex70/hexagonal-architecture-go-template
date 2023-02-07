@@ -1,15 +1,13 @@
 package templates
 
-var ServiceStartTemplate = `package {{.LowerEntity}}
+var ServiceTemplate = `package {{.LowerEntity}}
 
 import (
 	"context"
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
 	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
-`
-
-var ServiceEndTemplate = `	"{{.Module}}/server"
+	"{{.Module}}/server"
 	"log"
 	"net/http"
 	"strconv"
@@ -78,3 +76,11 @@ func New{{.Entity}}Service(er *{{.Entity}}.{{.Entity}}GormRepository, logger *lo
 	}
 }
 `
+
+func GetServiceFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{{
+		Template:        ServiceTemplate,
+		TemplateContext: tc,
+	},
+	}
+}

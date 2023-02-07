@@ -1,12 +1,5 @@
 package templates
 
-type DomainData struct {
-	Entity      string
-	LowerEntity string
-	Module      string
-	ProjectName string
-}
-
 var DomainTemplate = `package domain
 
 import "time"
@@ -18,3 +11,11 @@ type {{.Entity}} struct {
 	UpdateDate		time.Time	` + "`json:\"updateDate\"`" + `
 }
 `
+
+func GetDomainFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{{
+		Template:        DomainTemplate,
+		TemplateContext: tc,
+	},
+	}
+}
