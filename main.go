@@ -220,6 +220,14 @@ func main() {
 			panic(err)
 		}
 
+		// README.md
+		readmeFileConfiguration := templates.GetReadmeFileConfiguration(tc)
+		readmePath := projectPath + common.ReadmeFileName
+		err = common.GenerateFile(readmePath, common.MarkdownFileExtension, readmeFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
+
 	}
 	//if frontend == true {
 	//	err := common.GenerateStubs(projectPath, common.FrontendDirectory)

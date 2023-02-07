@@ -5,3 +5,10 @@ var ReadmeTemplate = `#{{.ProjectName}}
 
 PS: This app has been generated with https://github.com/aghex70/hexagonal-architecture-go-template
 `
+
+func GetReadmeFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{{
+		Template:        ReadmeTemplate,
+		TemplateContext: tc,
+	}}
+}
