@@ -125,16 +125,21 @@ func main() {
 		panic(err)
 	}
 
+	tc := templates.TemplateContext{
+		Module:      projectModule,
+		ProjectName: projectName,
+		//ProjectDescription: projectDescription,
+	}
+
 	err = common.GenerateStubs(projectPath, common.BackendDirectory)
 	if len(entities) > 0 {
 		for _, e := range entities {
 			le := strings.ToLower(e)
-			tc := templates.TemplateContext{
-				Entity:      e,
-				LowerEntity: le,
-				Module:      projectModule,
-				ProjectName: projectName,
-			}
+			initial := string(le[0])
+			tc.Entity = e
+			tc.LowerEntity = le
+			tc.Initial = initial
+
 			// Domain
 			domainPath := projectPath + common.BackendDirectory + common.DomainDirectory + le
 			domainFileConfiguration := templates.GetDomainFileConfiguration(tc)
@@ -144,42 +149,62 @@ func main() {
 			}
 
 			// Repositories
-			repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le
+			repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le + "/"
 			err = common.CreateDirectory(repositoryPath)
 			if err != nil {
 				panic(err)
 			}
 
 			repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
-			err = common.GenerateFile(repositoryPath+"/"+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
+			err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
 			if err != nil {
 				panic(err)
 			}
 
 			// Services
-			servicePath := projectPath + common.BackendDirectory + common.ServicesDirectory + le
+			servicePath := projectPath + common.BackendDirectory + common.ServicesDirectory + le + "/"
 			err = common.CreateDirectory(servicePath)
 			if err != nil {
 				panic(err)
 			}
 
 			serviceFileConfigurations := templates.GetServiceFileConfiguration(tc)
-			err = common.GenerateFile(servicePath+"/"+common.ServiceFileName, common.GolangFileExtension, serviceFileConfigurations)
+			err = common.GenerateFile(servicePath+common.ServiceFileName, common.GolangFileExtension, serviceFileConfigurations)
 			if err != nil {
 				panic(err)
 			}
 
 			serviceTestFileConfiguration := templates.GetLowerEntityFileConfiguration(tc)
-			err = common.GenerateFile(servicePath+"/"+common.ServiceTestFileName, common.GolangFileExtension, serviceTestFileConfiguration)
+			err = common.GenerateFile(servicePath+common.ServiceTestFileName, common.GolangFileExtension, serviceTestFileConfiguration)
 			if err != nil {
 				panic(err)
 			}
 
 			validatorsFileConfiguration := templates.GetLowerEntityFileConfiguration(tc)
-			err = common.GenerateFile(servicePath+"/"+common.ServiceValidatorsFileName, common.GolangFileExtension, validatorsFileConfiguration)
+			err = common.GenerateFile(servicePath+common.ServiceValidatorsFileName, common.GolangFileExtension, validatorsFileConfiguration)
 			if err != nil {
 				panic(err)
 			}
+
+			// Handlers
+			handlerPath := projectPath + common.BackendDirectory + common.HandlersDirectory + le + "/"
+			err = common.CreateDirectory(handlerPath)
+			if err != nil {
+				panic(err)
+			}
+
+			restHandlerFileConfiguration := templates.GetRestHandlerFileConfiguration(tc)
+			err = common.GenerateFile(handlerPath+common.RestHandlerFileName, common.GolangFileExtension, restHandlerFileConfiguration)
+			if err != nil {
+				panic(err)
+			}
+
+			restHandlerTestFileConfiguration := templates.GetLowerEntityFileConfiguration(tc)
+			err = common.GenerateFile(handlerPath+common.RestHandlerTestFileName, common.GolangFileExtension, restHandlerTestFileConfiguration)
+			if err != nil {
+				panic(err)
+			}
+
 		}
 
 		tc := templates.TemplateContext{

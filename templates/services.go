@@ -21,10 +21,11 @@ var ServicesRepeatTemplate = `type {{.Entity}}Servicer interface {
 `
 
 func GetServicesFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        ServicesStartTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        ServicesStartTemplate,
+			TemplateContext: tc,
+		},
 		{
 			Template:        ServicesRepeatTemplate,
 			TemplateContext: tc,

@@ -7,8 +7,9 @@ PS: This app has been generated with https://github.com/aghex70/hexagonal-archit
 `
 
 func GetReadmeFileConfiguration(tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        ReadmeTemplate,
-		TemplateContext: tc,
-	}}
+	return []FileConfiguration{
+		{
+			Template:        ReadmeTemplate,
+			TemplateContext: tc,
+		}}
 }

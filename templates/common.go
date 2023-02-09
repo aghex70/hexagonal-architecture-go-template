@@ -1,11 +1,12 @@
 package templates
 
 type TemplateContext struct {
-	Entity      string
-	LowerEntity string
-	Initial     string
-	Module      string
-	ProjectName string
+	Entity             string
+	LowerEntity        string
+	Initial            string
+	Module             string
+	ProjectName        string
+	ProjectDescription string
 }
 
 type FileConfiguration struct {

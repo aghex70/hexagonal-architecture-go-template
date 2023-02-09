@@ -28,10 +28,11 @@ type Delete{{.Entity}}Request struct {
 `
 
 func GetRequestsFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        RequestsStartTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        RequestsStartTemplate,
+			TemplateContext: tc,
+		},
 		{
 			Template:        RequestsRepeatTemplate,
 			TemplateContext: tc,

@@ -52,10 +52,11 @@ const ServeStartServerTemplate = `)
 `
 
 func GetServeFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        ServeStartTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        ServeStartTemplate,
+			TemplateContext: tc,
+		},
 		{
 			Template:        ServeImportTemplate,
 			TemplateContext: tc,

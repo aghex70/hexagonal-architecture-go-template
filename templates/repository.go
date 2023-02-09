@@ -125,9 +125,10 @@ func fromDto(td domain.{{.Entity}}) {{.Entity}} {
 `
 
 func GetRepositoryFileConfiguration(tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        RepositoryTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        RepositoryTemplate,
+			TemplateContext: tc,
+		},
 	}
 }

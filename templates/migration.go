@@ -13,10 +13,11 @@ const MigrationRepeatTemplate = `CREATE TABLE {{.ProjectName}}_{{.LowerEntity}}s
 `
 
 func GetMigrationFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        MigrationStartTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        MigrationStartTemplate,
+			TemplateContext: tc,
+		},
 		{
 			Template:        MigrationRepeatTemplate,
 			TemplateContext: tc,

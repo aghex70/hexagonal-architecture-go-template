@@ -78,9 +78,10 @@ func New{{.Entity}}Service(er *{{.Entity}}.{{.Entity}}GormRepository, logger *lo
 `
 
 func GetServiceFileConfiguration(tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        ServiceTemplate,
-		TemplateContext: tc,
-	},
+	return []FileConfiguration{
+		{
+			Template:        ServiceTemplate,
+			TemplateContext: tc,
+		},
 	}
 }
