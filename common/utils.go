@@ -98,11 +98,22 @@ func GenerateProjectPath(pbp, pn string) string {
 	return projectPath
 }
 
-func GenerateStubs(pp, side string) error {
-	baseDirectories := []string{
+func GenerateStubs(pp, side string, directories []string) error {
+	for _, d := range directories {
+		bd := pp + side + d
+		err := CreateDirectory(bd)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func GenerateBackendStubs(pp string) error {
+	baseBackendDirectories := []string{
 		DomainDirectory,
 		PortsDirectory,
-		ServicesDirectory,
+		BackendServicesDirectory,
 		HandlersDirectory,
 		RepositoriesDirectory,
 		HandlersDirectory,
@@ -112,14 +123,20 @@ func GenerateStubs(pp, side string) error {
 		ConfigDirectory,
 	}
 
-	for _, d := range baseDirectories {
-		bd := pp + side + d
-		err := CreateDirectory(bd)
-		if err != nil {
-			return err
-		}
+	return GenerateStubs(pp, BackendDirectory, baseBackendDirectories)
+}
+
+func GenerateFrontendStubs(pp string) error {
+	baseBackendDirectories := []string{
+		ComponentsDirectory,
+		UtilsDirectory,
+		RoutesDirectory,
+		FrontendServicesDirectory,
+		FeatureFlagsDirectory,
+		UseCasesDirectory,
 	}
-	return nil
+
+	return GenerateStubs(pp, FrontendDirectory+SourceDirectory, baseBackendDirectories)
 }
 
 func GenerateFile(path, extension string, data []templates.FileConfiguration) error {

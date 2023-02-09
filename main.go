@@ -131,7 +131,11 @@ func main() {
 		//ProjectDescription: projectDescription,
 	}
 
-	err = common.GenerateStubs(projectPath, common.BackendDirectory)
+	err = common.GenerateBackendStubs(projectPath)
+	if err != nil {
+		panic(err)
+	}
+
 	if len(entities) > 0 {
 		for _, e := range entities {
 			le := strings.ToLower(e)
@@ -162,7 +166,7 @@ func main() {
 			}
 
 			// Services
-			servicePath := projectPath + common.BackendDirectory + common.ServicesDirectory + le + "/"
+			servicePath := projectPath + common.BackendDirectory + common.BackendServicesDirectory + le + "/"
 			err = common.CreateDirectory(servicePath)
 			if err != nil {
 				panic(err)
@@ -254,11 +258,12 @@ func main() {
 		}
 
 	}
-	//if frontend == true {
-	//	err := common.GenerateStubs(projectPath, common.FrontendDirectory)
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//}
+	if true {
+		//if frontend == true {
+		err := common.GenerateFrontendStubs(projectPath)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 }
