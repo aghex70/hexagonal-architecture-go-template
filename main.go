@@ -136,6 +136,49 @@ func main() {
 		panic(err)
 	}
 
+	// Configuration
+	configurationPath := projectPath + common.BackendDirectory + common.ConfigDirectory
+
+	// Cache
+	cacheFileConfiguration := templates.GetCacheFileConfiguration(tc)
+	cacheConfigurationPath := configurationPath + common.CacheFileName
+	err = common.GenerateFile(cacheConfigurationPath, common.GolangFileExtension, cacheFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// Database
+	databaseFileConfiguration := templates.GetMySQLFileConfiguration(tc)
+	databaseConfigurationPath := configurationPath + common.MySQLFileName
+	err = common.GenerateFile(databaseConfigurationPath, common.GolangFileExtension, databaseFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// gRPC
+	gRPCFileConfiguration := templates.GetGRPCFileConfiguration(tc)
+	gRPCConfigurationPath := configurationPath + common.GRPCFileName
+	err = common.GenerateFile(gRPCConfigurationPath, common.GolangFileExtension, gRPCFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// REST
+	restFileConfiguration := templates.GetRestFileConfiguration(tc)
+	restConfigurationPath := configurationPath + common.RestFileName
+	err = common.GenerateFile(restConfigurationPath, common.GolangFileExtension, restFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// Server
+	serverFileConfiguration := templates.GetServerFileConfiguration(tc)
+	serverConfigurationPath := configurationPath + common.ServerFileName
+	err = common.GenerateFile(serverConfigurationPath, common.GolangFileExtension, serverFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
 	if len(entities) > 0 {
 		for _, e := range entities {
 			le := strings.ToLower(e)
