@@ -30,23 +30,23 @@ func main() {
 		panic(err)
 	}
 
-	////version, err := scanStringWithDefault(ScanVersion, DefaultVersion)
-	//_, err = common.ScanStringWithDefault(common.ScanVersion, common.DefaultVersion)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////description, err := scanStringWithDefault(ScanDescription, DefaultDescription)
-	//_, err = common.ScanStringWithDefault(common.ScanDescription, common.DefaultDescription)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//frontend, err := common.ScanStringCastBoolean(common.ScanReact, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
+	version, err := common.ScanStringWithDefault(common.ScanVersion, common.DefaultVersion)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("version ---->", version)
+
+	description, err := common.ScanStringWithDefault(common.ScanDescription, common.DefaultDescription)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("description ---->", description)
+
+	frontend, err := common.ScanStringCastBoolean(common.ScanReact, common.DefaultActive)
+	if err != nil {
+		panic(err)
+	}
+
 	////sequel, err := scanStringCastBoolean(ScanSqlDatabase, DefaultActive)
 	//_, err = common.ScanStringCastBoolean(common.ScanSqlDatabase, common.DefaultActive)
 	//if err != nil {
@@ -300,8 +300,8 @@ func main() {
 		}
 
 	}
-	if true {
-		//if frontend == true {
+
+	if frontend == true {
 		err := common.GenerateFrontendStubs(projectPath)
 		if err != nil {
 			panic(err)

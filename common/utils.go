@@ -28,15 +28,20 @@ func ScanString(prompt string) (string, error) {
 }
 
 func ScanStringWithDefault(prompt, defaultValue string) (string, error) {
-	value, err := ScanString(prompt)
+	fmt.Printf("%s: ", prompt)
+	reader := bufio.NewReader(os.Stdin)
+	line, err := reader.ReadString('\n')
 	if err != nil {
-		return "", err
+		return defaultValue, err
 	}
-	if value == "" {
-		return defaultValue, nil
+	if strings.Contains(line, "\n") {
+		line = strings.Replace(line, "\n", "", -1)
+		if line == "" {
+			return defaultValue, nil
+		}
+		return line, nil
 	}
-
-	return value, nil
+	return defaultValue, nil
 }
 
 func ScanStringCastBoolean(prompt, defaultValue string) (bool, error) {
