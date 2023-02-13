@@ -113,8 +113,7 @@ func main() {
 	//	panic(err)
 	//}
 
-	//entities, err := common.ScanMultipleStrings(common.ScanEntities)
-	entities := []string{"User", "Admin", "Car"}
+	entities, err := common.ScanMultipleStrings(common.ScanEntities)
 	if err != nil {
 		panic(err)
 	}

@@ -1,10 +1,13 @@
 package common
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"github.com/aghex70/hexagonal-architecture-go-template/templates"
 	"github.com/satori/go.uuid"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"io"
 	"os"
 	"strings"
@@ -55,15 +58,20 @@ func ScanStringCastBoolean(prompt, defaultValue string) (bool, error) {
 func ScanMultipleStrings(prompt string) ([]string, error) {
 	fmt.Printf("%s: ", prompt)
 	var values []string
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		var value string
-		if _, err := fmt.Scan(&value); err != nil {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			panic(err)
+		}
+		if strings.Contains(line, "\n") {
+			line = strings.Replace(line, "\n", "", -1)
+			for _, v := range strings.Split(line, " ") {
+				capitalized := cases.Title(language.Und, cases.NoLower).String(v)
+				values = append(values, capitalized)
+			}
 			break
 		}
-		if value == "" {
-			break
-		}
-		values = append(values, value)
 	}
 
 	return values, nil
