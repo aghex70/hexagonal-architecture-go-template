@@ -75,7 +75,7 @@ type GRPCConfig struct {
 	GRPCPort int    ` + "`" + "mapstructure:\"GRPC_PORT\"`" + `
 }
 
-func LoadGRPCConfig() *GRPConfig {
+func LoadGRPCConfig() *GRPCConfig {
 	cfg := &GRPCConfig{}
 	viper.Unmarshal(cfg)
 	return cfg
@@ -85,13 +85,13 @@ func LoadGRPCConfig() *GRPConfig {
 const ServerConfigTemplate = `package config
 
 type ServerConfig struct {
-	Grpc *GrpcConfig
+	GRPC *GRPCConfig
 	Rest *RestConfig
 }
 
 func LoadServerConfig() *ServerConfig {
 	return &ServerConfig{
-		Grpc: LoadGrpcConfig(),
+		GRPC: LoadGrpcConfig(),
 		Rest: LoadRestConfig(),
 	}
 }

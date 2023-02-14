@@ -45,7 +45,7 @@ func ScanStringWithDefault(prompt, defaultValue string) (string, error) {
 }
 
 func ScanStringCastBoolean(prompt, defaultValue string) (bool, error) {
-	value, err := ScanString(prompt)
+	value, err := ScanStringWithDefault(prompt, defaultValue)
 	if err != nil {
 		return false, err
 	}
@@ -60,7 +60,7 @@ func ScanStringCastBoolean(prompt, defaultValue string) (bool, error) {
 	}
 }
 
-func ScanMultipleStrings(prompt string) ([]string, error) {
+func ScanMultipleStrings(prompt, defaultValue string) ([]string, error) {
 	fmt.Printf("%s: ", prompt)
 	var values []string
 	reader := bufio.NewReader(os.Stdin)
@@ -71,6 +71,11 @@ func ScanMultipleStrings(prompt string) ([]string, error) {
 		}
 		if strings.Contains(line, "\n") {
 			line = strings.Replace(line, "\n", "", -1)
+			if line == "" {
+				values = append(values, defaultValue)
+				break
+			}
+
 			for _, v := range strings.Split(line, " ") {
 				capitalized := cases.Title(language.Und, cases.NoLower).String(v)
 				values = append(values, capitalized)

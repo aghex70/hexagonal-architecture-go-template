@@ -34,86 +34,87 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("version ---->", version)
 
 	description, err := common.ScanStringWithDefault(common.ScanDescription, common.DefaultDescription)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("description ---->", description)
+
+	tc := templates.TemplateContext{
+		Module:             projectModule,
+		ProjectName:        projectName,
+		ProjectDescription: description,
+		ProjectVersion:     version,
+	}
+
+	sequel, err := common.ScanStringCastBoolean(common.ScanSqlDatabase, common.DefaultActive)
+	if err != nil {
+		panic(err)
+	}
+
+	if sequel == true {
+		mysql, err := common.ScanStringCastBoolean(common.ScanMysql, common.DefaultActive)
+		if err != nil {
+			panic(err)
+		}
+
+		if mysql == false {
+			postgres, err := common.ScanStringCastBoolean(common.ScanPostgres, common.DefaultActive)
+			if err != nil {
+				panic(err)
+			}
+			tc.Postgres = postgres
+		}
+		tc.MySQL = mysql
+	}
+
+	nosequel, err := common.ScanStringCastBoolean(common.ScanNoSqlDatabase, common.DefaultActive)
+	if err != nil {
+		panic(err)
+	}
+
+	if nosequel == true {
+		mongodb, err := common.ScanStringCastBoolean(common.ScanMongodb, common.DefaultActive)
+		if err != nil {
+			panic(err)
+		}
+		tc.MongoDB = mongodb
+	}
+
+	redis, err := common.ScanStringCastBoolean(common.ScanRedis, common.DefaultActive)
+	if err != nil {
+		panic(err)
+	}
+	tc.Redis = redis
+
+	nginx, err := common.ScanStringCastBoolean(common.ScanReverseProxy, common.DefaultInactive)
+	if err != nil {
+		panic(err)
+	}
+	tc.NGINX = nginx
+
+	rest, err := common.ScanStringCastBoolean(common.ScanRest, common.DefaultActive)
+	if err != nil {
+		panic(err)
+	}
+
+	grpc, err := common.ScanStringCastBoolean(common.ScanGrpc, common.DefaultInactive)
+	if err != nil {
+		panic(err)
+	}
 
 	frontend, err := common.ScanStringCastBoolean(common.ScanReact, common.DefaultActive)
 	if err != nil {
 		panic(err)
 	}
 
-	////sequel, err := scanStringCastBoolean(ScanSqlDatabase, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanSqlDatabase, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////mysql, err := scanStringCastBoolean(ScanMysql, DefaultInactive)
-	//_, err = common.ScanStringCastBoolean(common.ScanMysql, common.DefaultInactive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////postgres, err := scanStringCastBoolean(ScanPostgres, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanPostgres, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////nosequel, err := scanStringCastBoolean(ScanNoSqlDatabase, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanNoSqlDatabase, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////mongodb, err := scanStringCastBoolean(ScanMongodb, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanMongodb, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////redis, err := scanStringCastBoolean(ScanRedis, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanRedis, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////nginx, err := scanStringCastBoolean(ScanReverseProxy, DefaultInactive)
-	//_, err = common.ScanStringCastBoolean(common.ScanReverseProxy, common.DefaultInactive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////api, err := scanStringCastBoolean(ScanApi, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanApi, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////rest, err := scanStringCastBoolean(ScanRest, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanRest, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	////grpc, err := scanStringCastBoolean(ScanGrpc, DefaultActive)
-	//_, err = common.ScanStringCastBoolean(common.ScanGrpc, common.DefaultActive)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
 	////graphql, err := scanStringCastBoolean(ScanGraphql, DefaultInactive)
 	//_, err = common.ScanStringCastBoolean(common.ScanGraphql, common.DefaultInactive)
 	//if err != nil {
 	//	panic(err)
 	//}
 
-	entities, err := common.ScanMultipleStrings(common.ScanEntities)
+	entities, err := common.ScanMultipleStrings(common.ScanEntities, common.DefaultEntity)
 	if err != nil {
 		panic(err)
 	}
@@ -122,12 +123,6 @@ func main() {
 	err = common.CreateDirectory(projectPath)
 	if err != nil {
 		panic(err)
-	}
-
-	tc := templates.TemplateContext{
-		Module:      projectModule,
-		ProjectName: projectName,
-		//ProjectDescription: projectDescription,
 	}
 
 	err = common.GenerateBackendStubs(projectPath)
@@ -139,35 +134,50 @@ func main() {
 	configurationPath := projectPath + common.BackendDirectory + common.ConfigDirectory
 
 	// Cache
-	cacheFileConfiguration := templates.GetCacheFileConfiguration(tc)
-	cacheConfigurationPath := configurationPath + common.CacheFileName
-	err = common.GenerateFile(cacheConfigurationPath, common.GolangFileExtension, cacheFileConfiguration)
-	if err != nil {
-		panic(err)
+	if redis == true {
+		cacheFileConfiguration := templates.GetCacheFileConfiguration(tc)
+		cacheConfigurationPath := configurationPath + common.CacheFileName
+		err = common.GenerateFile(cacheConfigurationPath, common.GolangFileExtension, cacheFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Database
-	databaseFileConfiguration := templates.GetMySQLFileConfiguration(tc)
-	databaseConfigurationPath := configurationPath + common.MySQLFileName
-	err = common.GenerateFile(databaseConfigurationPath, common.GolangFileExtension, databaseFileConfiguration)
-	if err != nil {
-		panic(err)
+	if sequel == true {
+		var databaseFileConfiguration []templates.FileConfiguration
+		switch tc.MySQL {
+		case true:
+			databaseFileConfiguration = templates.GetMySQLFileConfiguration(tc)
+		case false:
+			//databaseFileConfiguration := templates.GetPostgresFileConfiguration(tc)
+			databaseFileConfiguration = templates.GetMySQLFileConfiguration(tc)
+		}
+		databaseConfigurationPath := configurationPath + common.MySQLFileName
+		err = common.GenerateFile(databaseConfigurationPath, common.GolangFileExtension, databaseFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// gRPC
-	gRPCFileConfiguration := templates.GetGRPCFileConfiguration(tc)
-	gRPCConfigurationPath := configurationPath + common.GRPCFileName
-	err = common.GenerateFile(gRPCConfigurationPath, common.GolangFileExtension, gRPCFileConfiguration)
-	if err != nil {
-		panic(err)
+	if grpc == true {
+		gRPCFileConfiguration := templates.GetGRPCFileConfiguration(tc)
+		gRPCConfigurationPath := configurationPath + common.GRPCFileName
+		err = common.GenerateFile(gRPCConfigurationPath, common.GolangFileExtension, gRPCFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// REST
-	restFileConfiguration := templates.GetRestFileConfiguration(tc)
-	restConfigurationPath := configurationPath + common.RestFileName
-	err = common.GenerateFile(restConfigurationPath, common.GolangFileExtension, restFileConfiguration)
-	if err != nil {
-		panic(err)
+	if rest == true {
+		restFileConfiguration := templates.GetRestFileConfiguration(tc)
+		restConfigurationPath := configurationPath + common.RestFileName
+		err = common.GenerateFile(restConfigurationPath, common.GolangFileExtension, restFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Server
@@ -195,16 +205,18 @@ func main() {
 			}
 
 			// Repositories
-			repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le + "/"
-			err = common.CreateDirectory(repositoryPath)
-			if err != nil {
-				panic(err)
-			}
+			if sequel == true {
+				repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le + "/"
+				err = common.CreateDirectory(repositoryPath)
+				if err != nil {
+					panic(err)
+				}
 
-			repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
-			err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
-			if err != nil {
-				panic(err)
+				repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
+				err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
+				if err != nil {
+					panic(err)
+				}
 			}
 
 			// Services
@@ -253,10 +265,8 @@ func main() {
 
 		}
 
-		tc := templates.TemplateContext{
-			Module:      projectModule,
-			ProjectName: projectName,
-		}
+		tc.Module = projectModule
+		tc.ProjectName = projectName
 
 		// Requests
 		requestsFileConfigurations := templates.GetRequestsFileConfiguration(entities, tc)

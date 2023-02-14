@@ -1,7 +1,7 @@
 package templates
 
-var ReadmeTemplate = `#{{.ProjectName}}
-{{.ProjectDescription}}
+var ReadmeTemplate = `# {{.ProjectName}} {{.ProjectVersion}}
+### {{.ProjectDescription}}
 
 PS: This project has been generated with https://github.com/aghex70/hexagonal-architecture-go-template
 `

@@ -7,6 +7,13 @@ type TemplateContext struct {
 	Module             string
 	ProjectName        string
 	ProjectDescription string
+	ProjectVersion     string
+	Frontend           bool
+	NGINX              bool
+	MySQL              bool
+	Postgres           bool
+	MongoDB            bool
+	Redis              bool
 }
 
 type FileConfiguration struct {
