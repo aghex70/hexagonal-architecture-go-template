@@ -67,3 +67,11 @@ var dockerComposeMongoDBTemplate = `  db:
       retries: 10
 
 `
+
+func GetDockerComposeFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{{
+		Template:        DomainTemplate,
+		TemplateContext: tc,
+	},
+	}
+}

@@ -318,4 +318,12 @@ func main() {
 		}
 	}
 
+	// docker-compose
+	composeFileConfiguration := templates.GetDockerComposeFileConfiguration(tc)
+	composePath := projectPath + common.DockerComposeFileName
+	err = common.GenerateFile(composePath, common.YAMLFileExtension, composeFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
 }
