@@ -18,11 +18,22 @@ type FileConfiguration struct {
 	RepeatEntities  []string
 }
 
-type ComposeConfiguration struct {
+type ExtraConfiguration struct {
 	Frontend bool
 	NGINX    bool
 	MySQL    bool
 	Postgres bool
 	MongoDB  bool
 	Redis    bool
+}
+
+const EmptyTemplate = ``
+
+func GetEmptyFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{
+		{
+			Template:        EmptyTemplate,
+			TemplateContext: tc,
+		},
+	}
 }

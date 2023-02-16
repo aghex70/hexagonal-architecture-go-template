@@ -74,38 +74,38 @@ var dockerComposeRedisTemplate = `  redis:
 
 `
 
-func GetDockerComposeFileConfiguration(cc ComposeConfiguration, tc TemplateContext) []FileConfiguration {
+func GetDockerComposeFileConfiguration(ec ExtraConfiguration, tc TemplateContext) []FileConfiguration {
 	fc := []FileConfiguration{
 		{
 			Template:        dockerComposeBaseTemplate,
 			TemplateContext: tc,
 		},
 	}
-	if cc.Frontend {
+	if ec.Frontend {
 		fc = append(fc, FileConfiguration{
 			Template:        dockerComposeFrontendTemplate,
 			TemplateContext: tc,
 		})
 	}
-	if cc.MySQL {
+	if ec.MySQL {
 		fc = append(fc, FileConfiguration{
 			Template:        dockerComposeMySqlTemplate,
 			TemplateContext: tc,
 		})
 	}
-	if cc.Postgres {
+	if ec.Postgres {
 		fc = append(fc, FileConfiguration{
 			Template:        dockerComposePostgreSQLTemplate,
 			TemplateContext: tc,
 		})
 	}
-	if cc.MongoDB {
+	if ec.MongoDB {
 		fc = append(fc, FileConfiguration{
 			Template:        dockerComposeMongoDBTemplate,
 			TemplateContext: tc,
 		})
 	}
-	if cc.Redis {
+	if ec.Redis {
 		fc = append(fc, FileConfiguration{
 			Template:        dockerComposeRedisTemplate,
 			TemplateContext: tc,

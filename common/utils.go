@@ -139,6 +139,7 @@ func GenerateBackendStubs(pp string) error {
 		HandlersDirectory,
 		MigrationsDirectory,
 		ConfigDirectory,
+		ServerDirectory,
 	}
 
 	return GenerateStubs(pp, BackendDirectory, baseBackendDirectories)

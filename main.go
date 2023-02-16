@@ -47,7 +47,7 @@ func main() {
 		ProjectVersion:     version,
 	}
 
-	cc := templates.ComposeConfiguration{}
+	ec := templates.ExtraConfiguration{}
 
 	sequel, err := common.ScanStringCastBoolean(common.ScanSqlDatabase, common.DefaultActive)
 	if err != nil {
@@ -65,9 +65,9 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			cc.Postgres = postgres
+			ec.Postgres = postgres
 		}
-		cc.MySQL = mysql
+		ec.MySQL = mysql
 	}
 
 	if sequel == false {
@@ -81,7 +81,7 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			cc.MongoDB = mongodb
+			ec.MongoDB = mongodb
 		}
 	}
 
@@ -89,13 +89,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	cc.Redis = redis
+	ec.Redis = redis
 
 	nginx, err := common.ScanStringCastBoolean(common.ScanReverseProxy, common.DefaultInactive)
 	if err != nil {
 		panic(err)
 	}
-	cc.NGINX = nginx
+	ec.NGINX = nginx
 
 	rest, err := common.ScanStringCastBoolean(common.ScanRest, common.DefaultActive)
 	if err != nil {
@@ -150,7 +150,7 @@ func main() {
 	// Database
 	if sequel == true {
 		var databaseFileConfiguration []templates.FileConfiguration
-		switch cc.MySQL {
+		switch ec.MySQL {
 		case true:
 			databaseFileConfiguration = templates.GetMySQLFileConfiguration(tc)
 		case false:
@@ -337,15 +337,23 @@ func main() {
 	}
 
 	if frontend == true {
-		cc.Frontend = true
+		ec.Frontend = true
 		err := common.GenerateFrontendStubs(projectPath)
+		if err != nil {
+			panic(err)
+		}
+
+		//	frontend env
+		frontendEnvFileConfiguration := templates.GetEmptyFileConfiguration(tc)
+		frontendEnvFilePath := projectPath + common.FrontendDirectory + common.FrontendEnvFileName
+		err = common.GenerateFile(frontendEnvFilePath, "", frontendEnvFileConfiguration)
 		if err != nil {
 			panic(err)
 		}
 	}
 
 	// docker-compose
-	composeFileConfiguration := templates.GetDockerComposeFileConfiguration(cc, tc)
+	composeFileConfiguration := templates.GetDockerComposeFileConfiguration(ec, tc)
 	composePath := projectPath + common.DockerComposeFileName
 	err = common.GenerateFile(composePath, common.YAMLFileExtension, composeFileConfiguration)
 	if err != nil {
@@ -394,6 +402,36 @@ func main() {
 	migrationFileConfiguration := templates.GetMigrationPersistenceFileConfiguration(tc)
 	migrationFilePath := projectPath + common.BackendDirectory + common.DatabaseDirectory + common.MigrationFileName
 	err = common.GenerateFile(migrationFilePath, common.GolangFileExtension, migrationFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// server
+	serverInterfaceFileConfiguration := templates.GetServerInterfaceFileConfiguration(tc)
+	serverInterfaceFilePath := projectPath + common.BackendDirectory + common.ServerDirectory + common.ServerFileName
+	err = common.GenerateFile(serverInterfaceFilePath, common.GolangFileExtension, serverInterfaceFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	grpcFileConfiguration := templates.GetGRPCInterfaceFileConfiguration(tc)
+	grpcFilePath := projectPath + common.BackendDirectory + common.ServerDirectory + common.GRPCFileName
+	err = common.GenerateFile(grpcFilePath, common.GolangFileExtension, grpcFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	//restFileConfiguration := templates.GetGRPCInterfaceFileConfiguration(tc)
+	//restFilePath := projectPath + common.BackendDirectory + common.ServerDirectory + common.RestFileName
+	//err = common.GenerateFile(restFilePath, common.GolangFileExtension, restFileConfiguration)
+	//if err != nil {
+	//	panic(err)
+	//}
+
+	//	backend env
+	backendEnvFileConfiguration := templates.GetBackendEnvFileConfiguration(ec, tc)
+	backendEnvFilePath := projectPath + common.BackendDirectory + common.BackendEnvFileName
+	err = common.GenerateFile(backendEnvFilePath, "", backendEnvFileConfiguration)
 	if err != nil {
 		panic(err)
 	}
