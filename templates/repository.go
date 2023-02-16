@@ -103,21 +103,21 @@ func New{{.Entity}}GormRepository(db *gorm.DB) (*{{.Entity}}GormRepository, erro
 	}, nil
 }
 
-func (td {{.Entity}}) ToDto() domain.{{.Entity}} {
+func ({{.Initial}}{{.Initial}} {{.Entity}}) ToDto() domain.{{.Entity}} {
 	return domain.{{.Entity}}{
-		Name: 		  td.Name,
-		CreationDate: td.CreationDate,
-		Id:           td.Id,
-		UpdateDate:   td.UpdateDate,
+		Name: 		  {{.Initial}}{{.Initial}}.Name,
+		CreationDate: {{.Initial}}{{.Initial}}.CreationDate,
+		Id:           {{.Initial}}{{.Initial}}.Id,
+		UpdateDate:   {{.Initial}}{{.Initial}}.UpdateDate,
 	}
 }
 
-func fromDto(td domain.{{.Entity}}) {{.Entity}} {
+func fromDto({{.Initial}}{{.Initial}} domain.{{.Entity}}) {{.Entity}} {
 	return {{.Entity}}{
-		Name: 		  td.Name,
-		CreationDate: td.CreationDate,
-		Id:           td.Id,
-		UpdateDate:   td.UpdateDate,
+		Name: 		  {{.Initial}}{{.Initial}}.Name,
+		CreationDate: {{.Initial}}{{.Initial}}.CreationDate,
+		Id:           {{.Initial}}{{.Initial}}.Id,
+		UpdateDate:   {{.Initial}}{{.Initial}}.UpdateDate,
 	}
 }
 `

@@ -7,7 +7,6 @@ import (
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
 	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
-	"{{.Module}}/server"
 	"net/http"
 	"time"
 )
