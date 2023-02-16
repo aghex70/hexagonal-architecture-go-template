@@ -6,7 +6,6 @@ import (
 	"{{.Module}}/{{.ProjectName}}/config"
 	"{{.Module}}/{{.ProjectName}}/persistence/database"
 	"github.com/spf13/cobra"
-	"log"
 `
 
 const ServeImportTemplate = `	{{.LowerEntity}}Service "{{.Module}}/{{.ProjectName}}/internal/core/services/{{.LowerEntity}}"
@@ -51,6 +50,81 @@ const ServeStartServerTemplate = `)
 }
 `
 
+const importTemplate = `package cmd
+
+import (
+	"database/sql"
+	"{{.Module}}/persistence/database"
+	"github.com/spf13/cobra"
+)
+
+`
+
+const makeMigrationsCommandTemplate = `func MakeMigrationsCommand(db *sql.DB) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "makemigrations [filename]",
+		Short: "Generate database migrations",
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) != 1 {
+				panic("fooooooooooo")
+			}
+			filename := args[0]
+			err := database.MakeMigrations(db, filename)
+			if err != nil {
+				panic(err)
+			}
+		},
+	}
+	return cmd
+
+}
+
+`
+
+const migrateCommandTemplate = `func MigrateCommand(db *sql.DB) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "migrate",
+		Short: "Apply database migrations",
+		Run: func(cmd *cobra.Command, args []string) {
+			err := database.Migrate(db)
+			if err != nil {
+				panic(err)
+			}
+		},
+	}
+	return cmd
+}
+
+`
+
+const rootCommandTemplate = `package cmd
+
+import (
+	"{{.Module}}/config"
+	"{{.Module}}/persistence/database"
+	"github.com/spf13/cobra"
+)
+
+func RootCommand(cfg *config.Config) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "{{.ProjectName}}",
+		Short: "Root command",
+	}
+
+	// Intialize database
+	db, err := database.NewSqlDB(*cfg.Database)
+	if err != nil {
+		panic(err)
+	}
+
+	cmd.AddCommand(ServeCommand(cfg))
+	cmd.AddCommand(MakeMigrationsCommand(db))
+	cmd.AddCommand(MigrateCommand(db))
+	return cmd
+}
+
+`
+
 func GetServeFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {
 	return []FileConfiguration{
 		{
@@ -91,6 +165,41 @@ func GetServeFileConfiguration(entities []string, tc TemplateContext) []FileConf
 		},
 		{
 			Template:        ServeStartServerTemplate,
+			TemplateContext: tc,
+		},
+	}
+}
+
+func GetMakeMigrationsFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{
+		{
+			Template:        importTemplate,
+			TemplateContext: tc,
+		},
+		{
+			Template:        makeMigrationsCommandTemplate,
+			TemplateContext: tc,
+		},
+	}
+}
+
+func GetMigrateFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{
+		{
+			Template:        importTemplate,
+			TemplateContext: tc,
+		},
+		{
+			Template:        migrateCommandTemplate,
+			TemplateContext: tc,
+		},
+	}
+}
+
+func GetRootFileConfiguration(tc TemplateContext) []FileConfiguration {
+	return []FileConfiguration{
+		{
+			Template:        rootCommandTemplate,
 			TemplateContext: tc,
 		},
 	}

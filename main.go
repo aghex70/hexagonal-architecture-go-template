@@ -102,7 +102,7 @@ func main() {
 		panic(err)
 	}
 
-	grpc, err := common.ScanStringCastBoolean(common.ScanGrpc, common.DefaultInactive)
+	grpc, err := common.ScanStringCastBoolean(common.ScanGrpc, common.DefaultActive)
 	if err != nil {
 		panic(err)
 	}
@@ -297,7 +297,15 @@ func main() {
 			panic(err)
 		}
 
-		// Serve
+		// README.md
+		readmeFileConfiguration := templates.GetReadmeFileConfiguration(tc)
+		readmePath := projectPath + common.ReadmeFileName
+		err = common.GenerateFile(readmePath, common.MarkdownFileExtension, readmeFileConfiguration)
+		if err != nil {
+			panic(err)
+		}
+
+		// commands
 		serveFileConfigurations := templates.GetServeFileConfiguration(entities, tc)
 		servePath := projectPath + common.BackendDirectory + common.CommandDirectory + common.ServeFileName
 		err = common.GenerateFile(servePath, common.GolangFileExtension, serveFileConfigurations)
@@ -305,10 +313,23 @@ func main() {
 			panic(err)
 		}
 
-		// README.md
-		readmeFileConfiguration := templates.GetReadmeFileConfiguration(tc)
-		readmePath := projectPath + common.ReadmeFileName
-		err = common.GenerateFile(readmePath, common.MarkdownFileExtension, readmeFileConfiguration)
+		makeMigrationsConfiguration := templates.GetMakeMigrationsFileConfiguration(tc)
+		makeMigrationsPath := projectPath + common.BackendDirectory + common.CommandDirectory + common.MakeMigrationsFileName
+		err = common.GenerateFile(makeMigrationsPath, common.GolangFileExtension, makeMigrationsConfiguration)
+		if err != nil {
+			panic(err)
+		}
+
+		migrateConfiguration := templates.GetMigrateFileConfiguration(tc)
+		migratePath := projectPath + common.BackendDirectory + common.CommandDirectory + common.MigrateFileName
+		err = common.GenerateFile(migratePath, common.GolangFileExtension, migrateConfiguration)
+		if err != nil {
+			panic(err)
+		}
+
+		rootFileConfiguration := templates.GetRootFileConfiguration(tc)
+		rootPath := projectPath + common.BackendDirectory + common.CommandDirectory + common.RootFileName
+		err = common.GenerateFile(rootPath, common.GolangFileExtension, rootFileConfiguration)
 		if err != nil {
 			panic(err)
 		}

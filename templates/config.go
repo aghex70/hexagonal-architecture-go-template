@@ -91,7 +91,7 @@ type ServerConfig struct {
 
 func LoadServerConfig() *ServerConfig {
 	return &ServerConfig{
-		GRPC: LoadGrpcConfig(),
+		GRPC: LoadGRPCConfig(),
 		Rest: LoadRestConfig(),
 	}
 }
