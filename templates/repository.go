@@ -33,20 +33,20 @@ func ({{.Entity}}) TableName() string {
 	return "{{.ProjectName}}_{{.LowerEntity}}s"
 }
 
-func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, e domain.{{.Entity}}) error {
-	ne := fromDto(e)
-	result := gr.DB.Create(&ne)
+func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
+	n{{.Initial}} := fromDto({{.Initial}})
+	result := gr.DB.Create(&n{{.Initial}})
 	if result.Error != nil {
-		return result.Error
+		return domain.{{.Entity}}{}, result.Error
 	}
-	return nil
+	return n{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, e domain.{{.Entity}}) error {
-	ne := fromDto(e)
-	result := gr.DB.Model(&ne).Where({{.Entity}}{Id: ne.Id}).Updates(map[string]interface{}{
-		"update_date": ne.UpdateDate,
-		"name": ne.Name,
+func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) error {
+	n{{.Initial}} := fromDto({{.Initial}})
+	result := gr.DB.Model(&n{{.Initial}}).Where({{.Entity}}{Id: n{{.Initial}}.Id}).Updates(map[string]interface{}{
+		"update_date": n{{.Initial}}.UpdateDate,
+		"name": n{{.Initial}}.Name,
 	})
 
 	if result.RowsAffected == 0 {
@@ -60,32 +60,32 @@ func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, e domain.{{.Ent
 }
 
 func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domain.{{.Entity}}, error) {
-	var ne {{.Entity}}
-	result := gr.DB.Where(&{{.Entity}}{Id: id}).Find(&ne).First()
+	var n{{.Initial}} {{.Entity}}
+	result := gr.DB.Where(&{{.Entity}}{Id: id}).First(&n{{.Initial}})
 	if result.Error != nil {
 		return domain.{{.Entity}}{}, result.Error
 	}
-	return ne.ToDto(), nil
+	return n{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) List(ctx context.Context, categoryId int) ([]domain.{{.Entity}}, error) {
-	var es []{{.Entity}}
-	var nes []domain.{{.Entity}}
-	result := gr.DB.Find(&es)
+func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
+	var {{.Initial}}s []{{.Entity}}
+	var n{{.Initial}}s []domain.{{.Entity}}
+	result := gr.DB.Find(&{{.Initial}}s)
 	if result.Error != nil {
 		return []domain.{{.Entity}}{}, result.Error
 	}
 
-	for _, e := range es {
-		ee:= e.ToDto()
-		nes = append(nes, ee)
+	for _, {{.Initial}} := range {{.Initial}}s {
+		{{.Initial}}{{.Initial}}:= {{.Initial}}.ToDto()
+		n{{.Initial}}s = append(n{{.Initial}}s, {{.Initial}}{{.Initial}})
 	}
-	return nes, nil
+	return n{{.Initial}}s, nil
 }
 
 func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, id int) error {
-	ne := {{.Entity}}{Id: id}
-	result := gr.DB.Delete(&ne)
+	n{{.Initial}} := {{.Entity}}{Id: id}
+	result := gr.DB.Delete(&n{{.Initial}})
 	if result.Error != nil {
 		return result.Error
 	}

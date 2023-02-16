@@ -8,14 +8,11 @@ import (
 	"{{.Module}}/internal/core/ports"
 	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
 	"{{.Module}}/server"
-	"log"
 	"net/http"
-	"strconv"
 	"time"
 )
 
 type {{.Entity}}Service struct {
-	logger                 	*log.Logger
 	{{.LowerEntity}}Repository   *{{.LowerEntity}}.{{.Entity}}GormRepository
 }
 
@@ -34,7 +31,7 @@ func (s {{.Entity}}Service) Create(ctx context.Context, r *http.Request, req por
 
 func (s {{.Entity}}Service) Update(ctx context.Context, r *http.Request, req ports.Update{{.Entity}}Request) error {
 	e := domain.{{.Entity}}{
-		Id:                 int(req.Id),
+		Id:                 req.Id,
 		UpdateDate: 		time.Now(),
 		Name: 		  		req.Name,
 	}
@@ -69,11 +66,10 @@ func (s {{.Entity}}Service) List(ctx context.Context, r *http.Request) ([]domain
 	return es, nil
 }
 
-func New{{.Entity}}Service(er *{{.Entity}}.{{.Entity}}GormRepository, logger *log.Logger) {{.Entity}}Service {
+func New{{.Entity}}Service({{.Initial}}r *{{.LowerEntity}}.{{.Entity}}GormRepository) ({{.Entity}}Service, error) {
 	return {{.Entity}}Service{
-		logger:                 	logger,
-		{{.LowerEntity}}Repository:      er,
-	}
+		{{.LowerEntity}}Repository:      {{.Initial}}r,
+	}, nil
 }
 `
 

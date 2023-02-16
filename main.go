@@ -134,8 +134,14 @@ func main() {
 		panic(err)
 	}
 
-	// Configuration
 	configurationPath := projectPath + common.BackendDirectory + common.ConfigDirectory
+	// Configuration
+	configurationFileConfiguration := templates.GetConfigFileConfiguration(tc)
+	configurationFilePath := configurationPath + common.ConfigurationFileName
+	err = common.GenerateFile(configurationFilePath, common.GolangFileExtension, configurationFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
 
 	// Cache
 	if redis == true {

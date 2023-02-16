@@ -26,11 +26,11 @@ func ServeCommand(cfg *config.Config) *cobra.Command {
 			}
 `
 
-const ServeRepositoryTemplate = `			{{.Initial}}r := {{.LowerEntity}}Repository.New{{.Entity}}GormRepository(gdb)
+const ServeRepositoryTemplate = `			{{.Initial}}r, _ := {{.LowerEntity}}Repository.New{{.Entity}}GormRepository(gdb)
 `
 
 const ServeServiceAndHandlerTemplate = `
-			{{.Initial}}s := {{.LowerEntity}}Service.New{{.Entity}}Service({{.Initial}}r)
+			{{.Initial}}s, _ := {{.LowerEntity}}Service.New{{.Entity}}Service({{.Initial}}r)
 			{{.Initial}}h := {{.LowerEntity}}Handler.New{{.Entity}}Handler({{.Initial}}s)
 `
 
