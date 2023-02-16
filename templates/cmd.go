@@ -3,14 +3,14 @@ package templates
 const ServeStartTemplate = `package cmd
 
 import (
-	"{{.Module}}/{{.ProjectName}}/config"
-	"{{.Module}}/{{.ProjectName}}/persistence/database"
+	"{{.Module}}/config"
+	"{{.Module}}/persistence/database"
 	"github.com/spf13/cobra"
 `
 
-const ServeImportTemplate = `	{{.LowerEntity}}Service "{{.Module}}/{{.ProjectName}}/internal/core/services/{{.LowerEntity}}"
-	{{.LowerEntity}}Handler "{{.Module}}/{{.ProjectName}}/internal/handlers/{{.LowerEntity}}"
-	{{.LowerEntity}}Repository "{{.Module}}/{{.ProjectName}}/internal/repositories/{{.LowerEntity}}"
+const ServeImportTemplate = `	{{.LowerEntity}}Service "{{.Module}}/internal/core/services/{{.LowerEntity}}"
+	{{.LowerEntity}}Handler "{{.Module}}/internal/handlers/{{.LowerEntity}}"
+	{{.LowerEntity}}Repository "{{.Module}}/internal/repositories/{{.LowerEntity}}"
 `
 
 const ServeCommandTemplate = `)

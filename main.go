@@ -376,4 +376,26 @@ func main() {
 		panic(err)
 	}
 
+	// persistence
+	databaseFileConfiguration := templates.GetMySQLPersistenceFileConfiguration(tc)
+	databaseFilePath := projectPath + common.BackendDirectory + common.DatabaseDirectory + common.DatabaseFileName
+	err = common.GenerateFile(databaseFilePath, common.GolangFileExtension, databaseFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	gormFileConfiguration := templates.GetGormPersistenceFileConfiguration(tc)
+	gormFilePath := projectPath + common.BackendDirectory + common.DatabaseDirectory + common.GormFileName
+	err = common.GenerateFile(gormFilePath, common.GolangFileExtension, gormFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	migrationFileConfiguration := templates.GetMigrationPersistenceFileConfiguration(tc)
+	migrationFilePath := projectPath + common.BackendDirectory + common.DatabaseDirectory + common.MigrationFileName
+	err = common.GenerateFile(migrationFilePath, common.GolangFileExtension, migrationFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
 }
