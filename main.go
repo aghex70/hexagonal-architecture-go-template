@@ -47,6 +47,8 @@ func main() {
 		ProjectVersion:     version,
 	}
 
+	cc := templates.ComposeConfiguration{}
+
 	sequel, err := common.ScanStringCastBoolean(common.ScanSqlDatabase, common.DefaultActive)
 	if err != nil {
 		panic(err)
@@ -63,35 +65,37 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			tc.Postgres = postgres
+			cc.Postgres = postgres
 		}
-		tc.MySQL = mysql
+		cc.MySQL = mysql
 	}
 
-	nosequel, err := common.ScanStringCastBoolean(common.ScanNoSqlDatabase, common.DefaultActive)
-	if err != nil {
-		panic(err)
-	}
-
-	if nosequel == true {
-		mongodb, err := common.ScanStringCastBoolean(common.ScanMongodb, common.DefaultActive)
+	if sequel == false {
+		nosequel, err := common.ScanStringCastBoolean(common.ScanNoSqlDatabase, common.DefaultActive)
 		if err != nil {
 			panic(err)
 		}
-		tc.MongoDB = mongodb
+
+		if nosequel == true {
+			mongodb, err := common.ScanStringCastBoolean(common.ScanMongodb, common.DefaultActive)
+			if err != nil {
+				panic(err)
+			}
+			cc.MongoDB = mongodb
+		}
 	}
 
 	redis, err := common.ScanStringCastBoolean(common.ScanRedis, common.DefaultActive)
 	if err != nil {
 		panic(err)
 	}
-	tc.Redis = redis
+	cc.Redis = redis
 
 	nginx, err := common.ScanStringCastBoolean(common.ScanReverseProxy, common.DefaultInactive)
 	if err != nil {
 		panic(err)
 	}
-	tc.NGINX = nginx
+	cc.NGINX = nginx
 
 	rest, err := common.ScanStringCastBoolean(common.ScanRest, common.DefaultActive)
 	if err != nil {
@@ -146,7 +150,7 @@ func main() {
 	// Database
 	if sequel == true {
 		var databaseFileConfiguration []templates.FileConfiguration
-		switch tc.MySQL {
+		switch cc.MySQL {
 		case true:
 			databaseFileConfiguration = templates.GetMySQLFileConfiguration(tc)
 		case false:
@@ -312,6 +316,7 @@ func main() {
 	}
 
 	if frontend == true {
+		cc.Frontend = true
 		err := common.GenerateFrontendStubs(projectPath)
 		if err != nil {
 			panic(err)
@@ -319,7 +324,7 @@ func main() {
 	}
 
 	// docker-compose
-	composeFileConfiguration := templates.GetDockerComposeFileConfiguration(tc)
+	composeFileConfiguration := templates.GetDockerComposeFileConfiguration(cc, tc)
 	composePath := projectPath + common.DockerComposeFileName
 	err = common.GenerateFile(composePath, common.YAMLFileExtension, composeFileConfiguration)
 	if err != nil {

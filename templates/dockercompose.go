@@ -49,7 +49,7 @@ var dockerComposeMySqlTemplate = `  db:
 
 `
 
-var dockerComposePostgreSQLTemplate = `db:
+var dockerComposePostgreSQLTemplate = `  db:
     image: postgres
 
 `
@@ -68,10 +68,48 @@ var dockerComposeMongoDBTemplate = `  db:
 
 `
 
-func GetDockerComposeFileConfiguration(tc TemplateContext) []FileConfiguration {
-	return []FileConfiguration{{
-		Template:        DomainTemplate,
-		TemplateContext: tc,
-	},
+var dockerComposeRedisTemplate = `  redis:
+    image: redis:alpine
+    command: [ redis-server, --port, "10379" ]
+
+`
+
+func GetDockerComposeFileConfiguration(cc ComposeConfiguration, tc TemplateContext) []FileConfiguration {
+	fc := []FileConfiguration{
+		{
+			Template:        dockerComposeBaseTemplate,
+			TemplateContext: tc,
+		},
 	}
+	if cc.Frontend {
+		fc = append(fc, FileConfiguration{
+			Template:        dockerComposeFrontendTemplate,
+			TemplateContext: tc,
+		})
+	}
+	if cc.MySQL {
+		fc = append(fc, FileConfiguration{
+			Template:        dockerComposeMySqlTemplate,
+			TemplateContext: tc,
+		})
+	}
+	if cc.Postgres {
+		fc = append(fc, FileConfiguration{
+			Template:        dockerComposePostgreSQLTemplate,
+			TemplateContext: tc,
+		})
+	}
+	if cc.MongoDB {
+		fc = append(fc, FileConfiguration{
+			Template:        dockerComposeMongoDBTemplate,
+			TemplateContext: tc,
+		})
+	}
+	if cc.Redis {
+		fc = append(fc, FileConfiguration{
+			Template:        dockerComposeRedisTemplate,
+			TemplateContext: tc,
+		})
+	}
+	return fc
 }
