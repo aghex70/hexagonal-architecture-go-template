@@ -5,7 +5,6 @@ const RestHandlerTemplate = `package {{.LowerEntity}}
 import (
     "github.com/gin-gonic/gin"
 	"{{.Module}}/internal/core/ports"
-    "net/http"
 )
 
 type {{.Entity}}Handler struct {
@@ -47,7 +46,7 @@ func (h {{.Entity}}Handler) List(c *gin.Context) {
 	}
 }
 
-func New{{.Entity}}Handler(cs ports.{{.Entity}}Servicer) {{.Entity}}Handler {
+func New{{.Entity}}Handler({{.Initial}}s ports.{{.Entity}}Servicer) {{.Entity}}Handler {
 	return {{.Entity}}Handler{
 		{{.LowerEntity}}Service: {{.Initial}}s,
 	}

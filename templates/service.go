@@ -16,7 +16,7 @@ import (
 
 type {{.Entity}}Service struct {
 	logger                 	*log.Logger
-	{{.LowerEntity}}Repository   *{{.Entity}}.{{.Entity}}GormRepository
+	{{.LowerEntity}}Repository   *{{.LowerEntity}}.{{.Entity}}GormRepository
 }
 
 func (s {{.Entity}}Service) Create(ctx context.Context, r *http.Request, req ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
@@ -34,7 +34,7 @@ func (s {{.Entity}}Service) Create(ctx context.Context, r *http.Request, req por
 
 func (s {{.Entity}}Service) Update(ctx context.Context, r *http.Request, req ports.Update{{.Entity}}Request) error {
 	e := domain.{{.Entity}}{
-		Id:                 int(req.{{.Entity}}Id),
+		Id:                 int(req.Id),
 		UpdateDate: 		time.Now(),
 		Name: 		  		req.Name,
 	}
@@ -54,7 +54,7 @@ func (s {{.Entity}}Service) Get(ctx context.Context, r *http.Request, req ports.
 }
 
 func (s {{.Entity}}Service) Delete(ctx context.Context, r *http.Request, req ports.Delete{{.Entity}}Request) error {
-	err := s.{{.LowerEntity}}Repository.Delete(ctx, int(req.{{.Entity}}Id), int(userId))
+	err := s.{{.LowerEntity}}Repository.Delete(ctx, int(req.Id))
 	if err != nil {
 		return err
 	}

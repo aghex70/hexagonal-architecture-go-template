@@ -169,7 +169,7 @@ func GenerateFile(path, extension string, data []templates.FileConfiguration) er
 		if d.Repeat {
 			for _, entity := range d.RepeatEntities {
 				templateContext := d.TemplateContext
-				if templateContext.Entity == "" {
+				if templateContext.Entity != entity {
 					templateContext.Entity = entity
 					templateContext.LowerEntity = strings.ToLower(entity)
 					templateContext.Initial = string(templateContext.LowerEntity[0])

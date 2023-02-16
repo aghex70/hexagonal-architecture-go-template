@@ -5,11 +5,9 @@ var RepositoryTemplate = `package {{.LowerEntity}}
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"{{.Module}}/internal/core/domain"
 	"gorm.io/gorm"
 	"log"
-	"strconv"
 	"time"
 )
 
@@ -65,7 +63,7 @@ func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domai
 	var ne {{.Entity}}
 	result := gr.DB.Where(&{{.Entity}}{Id: id}).Find(&ne).First()
 	if result.Error != nil {
-		return domain.{{.Entity}}Info{}, result.Error
+		return domain.{{.Entity}}{}, result.Error
 	}
 	return ne.ToDto(), nil
 }
