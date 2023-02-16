@@ -352,4 +352,28 @@ func main() {
 		panic(err)
 	}
 
+	// main
+	mainFileConfiguration := templates.GetMainFileConfiguration(tc)
+	mainPath := projectPath + common.BackendDirectory + common.MainFileName
+	err = common.GenerateFile(mainPath, common.GolangFileExtension, mainFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// go.mod
+	goModFileConfiguration := templates.GetGoModFileConfiguration(tc)
+	goModPath := projectPath + common.BackendDirectory + common.GoModFileName
+	err = common.GenerateFile(goModPath, common.ModFileExtension, goModFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
+	// backendDockerfile
+	backendDockerFileConfiguration := templates.GetBackendDockerfileFileConfiguration(tc)
+	backendDockerFilePath := projectPath + common.BackendDirectory + common.DockerFileName
+	err = common.GenerateFile(backendDockerFilePath, "", backendDockerFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
 }
