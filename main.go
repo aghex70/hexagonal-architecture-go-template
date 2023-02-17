@@ -427,12 +427,12 @@ func main() {
 		panic(err)
 	}
 
-	//restFileConfiguration := templates.GetGRPCInterfaceFileConfiguration(tc)
-	//restFilePath := projectPath + common.BackendDirectory + common.ServerDirectory + common.RestFileName
-	//err = common.GenerateFile(restFilePath, common.GolangFileExtension, restFileConfiguration)
-	//if err != nil {
-	//	panic(err)
-	//}
+	restFileConfiguration := templates.GetRestServerFileConfiguration(entities, tc)
+	restFilePath := projectPath + common.BackendDirectory + common.ServerDirectory + common.RestFileName
+	err = common.GenerateFile(restFilePath, common.GolangFileExtension, restFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
 
 	//	backend env
 	backendEnvFileConfiguration := templates.GetBackendEnvFileConfiguration(ec, tc)

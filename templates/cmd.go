@@ -5,6 +5,7 @@ const ServeStartTemplate = `package cmd
 import (
 	"{{.Module}}/config"
 	"{{.Module}}/persistence/database"
+	"{{.Module}}/server"
 	"github.com/spf13/cobra"
 `
 
@@ -35,9 +36,9 @@ const ServeServiceAndHandlerTemplate = `
 `
 
 const ServeInitializeTemplate = `
-			s := server.NewRestServer(cfg.Server.Rest,`
+			s := server.NewRestServer(cfg.Server.Rest`
 
-const ServeInitializeParamsTemplate = `{{.LowerEntity}}H, `
+const ServeInitializeParamsTemplate = `, {{.LowerEntity}}H`
 
 const ServeStartServerTemplate = `)
 			err = s.StartServer()
