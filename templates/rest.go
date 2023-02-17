@@ -30,9 +30,9 @@ func (s *RestServer) StartServer() error {
 
 const StartServerHandlersTemplate = `	// {{.TableSuffix}}
 	router.POST("/{{.LowerEntity}}", s.{{.LowerEntity}}Handler.Create{{.Entity}})
-	router.GET("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Get{{.Entity}})
-	router.PUT("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Update{{.Entity}})
-	router.DELETE("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Delete{{.Entity}})
+	router.GET("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Get{{.Entity}})
+	router.PUT("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Update{{.Entity}})
+	router.DELETE("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Delete{{.Entity}})
 	router.GET("/{{.LowerEntity}}", s.{{.LowerEntity}}Handler.List)
 
 `

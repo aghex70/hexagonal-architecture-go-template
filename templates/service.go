@@ -7,7 +7,6 @@ import (
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
 	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
-	"net/http"
 	"time"
 )
 
@@ -41,16 +40,16 @@ func (s {{.Entity}}Service) Update(ctx context.Context, r ports.Update{{.Entity}
 	return u{{.Initial}}, nil
 }
 
-func (s {{.Entity}}Service) Get(ctx context.Context, r *http.Request, req ports.Get{{.Entity}}Request) (domain.{{.Entity}}, error) {
-	{{.Initial}}{{.Initial}}, err := s.{{.LowerEntity}}Repository.GetById(ctx, req.Id)
+func (s {{.Entity}}Service) Get(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
+	{{.Initial}}{{.Initial}}, err := s.{{.LowerEntity}}Repository.GetById(ctx, uuid)
 	if err != nil {
 		return domain.{{.Entity}}{}, err
 	}
 	return {{.Initial}}{{.Initial}}, nil
 }
 
-func (s {{.Entity}}Service) Delete(ctx context.Context, r *http.Request, req ports.Delete{{.Entity}}Request) error {
-	err := s.{{.LowerEntity}}Repository.Delete(ctx, req.Id)
+func (s {{.Entity}}Service) Delete(ctx context.Context, uuid string) error {
+	err := s.{{.LowerEntity}}Repository.Delete(ctx, uuid)
 	if err != nil {
 		return err
 	}

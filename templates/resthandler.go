@@ -47,7 +47,8 @@ func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
 }
 
 func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
-	{{.Initial}}{{.Initial}}, err := h.{{.LowerEntity}}Service.Get(nil, r, payload)
+	uuid := c.Param("uuid")
+	{{.Initial}}{{.Initial}}, err := h.{{.LowerEntity}}Service.Get(nil, uuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -57,7 +58,8 @@ func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
 }
 
 func (h {{.Entity}}Handler) Delete{{.Entity}}(c *gin.Context) {
-	err := h.{{.LowerEntity}}Service.Delete(nil, r, payload)
+	uuid := c.Param("uuid")
+	err := h.{{.LowerEntity}}Service.Delete(nil, uuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

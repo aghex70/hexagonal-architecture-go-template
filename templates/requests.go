@@ -12,19 +12,10 @@ var RequestsRepeatTemplate = `type Create{{.Entity}}Request struct {
 }
 
 type Update{{.Entity}}Request struct {
-	Id					int  		` + "`json:\"id\"`" + `
+	Id					string  	` + "`json:\"id\"`" + `
 	Name       			string 		` + "`json:\"name\"`" + `
 	UpdateDate        	time.Time 	` + "`json:\"updateDate\"`" + `
 }
-
-type Get{{.Entity}}Request struct {
-	Id	int  ` + "`json:\"id\"`" + `
-}
-
-type Delete{{.Entity}}Request struct {
-	Id	int  ` + "`json:\"id\"`" + `
-}
-
 `
 
 func GetRequestsFileConfiguration(entities []string, tc TemplateContext) []FileConfiguration {

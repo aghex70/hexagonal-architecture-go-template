@@ -18,7 +18,7 @@ type {{.Entity}}GormRepository struct {
 }
 
 type {{.Entity}} struct {
-	Id            int        ` + "`gorm:\"primaryKey;column:id\"`" + `
+	Id            string     ` + "`gorm:\"primaryKey;column:id\"`" + `
 	Name          string     ` + "`gorm:\"column:name\"`" + `
 	CreationDate  time.Time  ` + "`gorm:\"column:creation_date;autoCreateTime\"`" + `
 	UpdateDate    time.Time  ` + "`gorm:\"column:update_date\"`" + `
@@ -59,9 +59,9 @@ func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} do
 	return u{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domain.{{.Entity}}, error) {
+func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
 	var {{.Initial}}{{.Initial}} {{.Entity}}
-	result := gr.DB.Where(&{{.Entity}}{Id: id}).First(&{{.Initial}}{{.Initial}})
+	result := gr.DB.Where(&{{.Entity}}{Id: uuid}).First(&{{.Initial}}{{.Initial}})
 	if result.Error != nil {
 		return domain.{{.Entity}}{}, result.Error
 	}
@@ -83,8 +83,8 @@ func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Enti
 	return {{.Initial}}{{.Initial}}s, nil
 }
 
-func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, id int) error {
-	{{.Initial}}{{.Initial}} := {{.Entity}}{Id: id}
+func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, uuid string) error {
+	{{.Initial}}{{.Initial}} := {{.Entity}}{Id: uuid}
 	result := gr.DB.Delete(&{{.Initial}}{{.Initial}})
 	if result.Error != nil {
 		return result.Error

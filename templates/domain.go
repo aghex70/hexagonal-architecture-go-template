@@ -5,7 +5,7 @@ var DomainTemplate = `package domain
 import "time"
 
 type {{.Entity}} struct {
-	Id				int			` + "`json:\"id\"`" + `
+	Id				string		` + "`json:\"id\"`" + `
 	Name			string		` + "`json:\"name\"`" + `
 	CreationDate	time.Time	` + "`json:\"creationDate\"`" + `
 	UpdateDate		time.Time	` + "`json:\"updateDate\"`" + `
