@@ -30,7 +30,7 @@ type Tabler interface {
 
 // TableName overrides the table name
 func ({{.Entity}}) TableName() string {
-	return "{{.ProjectName}}_{{.LowerEntity}}s"
+	return "{{.ProjectName}}_{{.TableSuffix}}"
 }
 
 func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
@@ -128,5 +128,18 @@ func GetRepositoryFileConfiguration(tc TemplateContext) []FileConfiguration {
 			Template:        RepositoryTemplate,
 			TemplateContext: tc,
 		},
+	}
+}
+
+func GenerateTableSuffix(entity string) string {
+	lastLetterIndex := len(entity) - 1
+	lastLetter := entity[lastLetterIndex:]
+	switch lastLetter {
+	case "s":
+		return entity
+	case "y":
+		return entity[:lastLetterIndex] + "ies"
+	default:
+		return entity + "s"
 	}
 }

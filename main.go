@@ -222,6 +222,7 @@ func main() {
 					panic(err)
 				}
 
+				tc.TableSuffix = templates.GenerateTableSuffix(tc.LowerEntity)
 				repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
 				err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
 				if err != nil {

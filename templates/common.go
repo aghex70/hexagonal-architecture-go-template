@@ -8,6 +8,7 @@ type TemplateContext struct {
 	ProjectName        string
 	ProjectDescription string
 	ProjectVersion     string
+	TableSuffix        string
 }
 
 type FileConfiguration struct {
