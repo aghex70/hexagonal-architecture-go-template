@@ -3,7 +3,6 @@ package templates
 const RestImportTemplate = `package server
 
 import (
-	"fmt"
 	"{{.Module}}/config"
 	"{{.Module}}/internal/core/ports"
 `
@@ -11,7 +10,8 @@ import (
 const RestHandlerImportTemplate = `	"{{.Module}}/internal/handlers/{{.LowerEntity}}"
 `
 
-const RestServerTemplate = `)
+const RestServerTemplate = `	"github.com/gin-gonic/gin"
+)
 
 type RestServer struct {
 	cfg               config.RestConfig`
@@ -24,13 +24,23 @@ const StartServerTemplate = `
 }
 
 func (s *RestServer) StartServer() error {
-	fmt.Println("Starting server")
-	return nil
-}
+	router := gin.Default()
 
 `
 
-const NewRestServerTemplate = `func NewRestServer(cfg *config.RestConfig, `
+const StartServerHandlersTemplate = `	// {{.TableSuffix}}
+	router.POST("/{{.LowerEntity}}", s.{{.LowerEntity}}Handler.Create{{.Entity}})
+	router.GET("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Get{{.Entity}})
+	router.PUT("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Update{{.Entity}})
+	router.DELETE("/{{.LowerEntity}}/:id", s.{{.LowerEntity}}Handler.Delete{{.Entity}})
+	router.GET("/{{.LowerEntity}}", s.{{.LowerEntity}}Handler.List)
+
+`
+
+const NewRestServerTemplate = `	return nil
+}
+
+func NewRestServer(cfg *config.RestConfig, `
 
 const NewRestServerParamsTemplate = `{{.LowerEntity}}h {{.LowerEntity}}.{{.Entity}}Handler, `
 
@@ -70,6 +80,12 @@ func GetRestServerFileConfiguration(entities []string, tc TemplateContext) []Fil
 		{
 			Template:        StartServerTemplate,
 			TemplateContext: tc,
+		},
+		{
+			Template:        StartServerHandlersTemplate,
+			TemplateContext: tc,
+			Repeat:          true,
+			RepeatEntities:  entities,
 		},
 		{
 			Template:        NewRestServerTemplate,

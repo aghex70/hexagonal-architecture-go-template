@@ -5,6 +5,7 @@ import (
 	"github.com/aghex70/hexagonal-architecture-go-template/common"
 	"github.com/aghex70/hexagonal-architecture-go-template/templates"
 	"os"
+	"sort"
 	"strings"
 	"time"
 )
@@ -119,6 +120,7 @@ func main() {
 	//}
 
 	entities, err := common.ScanMultipleStrings(common.ScanEntities, common.DefaultEntity)
+	sort.Strings(entities)
 	if err != nil {
 		panic(err)
 	}
@@ -205,6 +207,7 @@ func main() {
 			tc.Entity = e
 			tc.LowerEntity = le
 			tc.Initial = initial
+			tc.TableSuffix = templates.GenerateTableSuffix(tc.LowerEntity)
 
 			// Domain
 			domainPath := projectPath + common.BackendDirectory + common.DomainDirectory + le
@@ -222,7 +225,6 @@ func main() {
 					panic(err)
 				}
 
-				tc.TableSuffix = templates.GenerateTableSuffix(tc.LowerEntity)
 				repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
 				err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
 				if err != nil {

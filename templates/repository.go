@@ -42,35 +42,35 @@ func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} do
 	return n{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) error {
-	n{{.Initial}} := fromDto({{.Initial}})
-	result := gr.DB.Model(&n{{.Initial}}).Where({{.Entity}}{Id: n{{.Initial}}.Id}).Updates(map[string]interface{}{
-		"update_date": n{{.Initial}}.UpdateDate,
-		"name": n{{.Initial}}.Name,
+func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
+	u{{.Initial}} := fromDto({{.Initial}})
+	result := gr.DB.Model(&u{{.Initial}}).Where({{.Entity}}{Id: u{{.Initial}}.Id}).Updates(map[string]interface{}{
+		"update_date": u{{.Initial}}.UpdateDate,
+		"name": u{{.Initial}}.Name,
 	})
 
 	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+		return domain.{{.Entity}}{}, gorm.ErrRecordNotFound
 	}
 
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
-}
-
-func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domain.{{.Entity}}, error) {
-	var n{{.Initial}} {{.Entity}}
-	result := gr.DB.Where(&{{.Entity}}{Id: id}).First(&n{{.Initial}})
 	if result.Error != nil {
 		return domain.{{.Entity}}{}, result.Error
 	}
-	return n{{.Initial}}.ToDto(), nil
+	return u{{.Initial}}.ToDto(), nil
+}
+
+func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, id int) (domain.{{.Entity}}, error) {
+	var {{.Initial}}{{.Initial}} {{.Entity}}
+	result := gr.DB.Where(&{{.Entity}}{Id: id}).First(&{{.Initial}}{{.Initial}})
+	if result.Error != nil {
+		return domain.{{.Entity}}{}, result.Error
+	}
+	return {{.Initial}}{{.Initial}}.ToDto(), nil
 }
 
 func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
 	var {{.Initial}}s []{{.Entity}}
-	var n{{.Initial}}s []domain.{{.Entity}}
+	var {{.Initial}}{{.Initial}}s []domain.{{.Entity}}
 	result := gr.DB.Find(&{{.Initial}}s)
 	if result.Error != nil {
 		return []domain.{{.Entity}}{}, result.Error
@@ -78,14 +78,14 @@ func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Enti
 
 	for _, {{.Initial}} := range {{.Initial}}s {
 		{{.Initial}}{{.Initial}}:= {{.Initial}}.ToDto()
-		n{{.Initial}}s = append(n{{.Initial}}s, {{.Initial}}{{.Initial}})
+		{{.Initial}}{{.Initial}}s = append({{.Initial}}{{.Initial}}s, {{.Initial}}{{.Initial}})
 	}
-	return n{{.Initial}}s, nil
+	return {{.Initial}}{{.Initial}}s, nil
 }
 
 func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, id int) error {
-	n{{.Initial}} := {{.Entity}}{Id: id}
-	result := gr.DB.Delete(&n{{.Initial}})
+	{{.Initial}}{{.Initial}} := {{.Entity}}{Id: id}
+	result := gr.DB.Delete(&{{.Initial}}{{.Initial}})
 	if result.Error != nil {
 		return result.Error
 	}

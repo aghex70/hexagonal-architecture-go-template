@@ -173,6 +173,7 @@ func GenerateFile(path, extension string, data []templates.FileConfiguration) er
 					templateContext.Entity = entity
 					templateContext.LowerEntity = strings.ToLower(entity)
 					templateContext.Initial = string(templateContext.LowerEntity[0])
+					templateContext.TableSuffix = templates.GenerateTableSuffix(templateContext.LowerEntity)
 				}
 
 				err = executeTemplate(f, d.Template, templateContext)
