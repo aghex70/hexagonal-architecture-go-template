@@ -26,7 +26,7 @@ func (h {{.Entity}}Handler) Create{{.Entity}}(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"{{.LowerEntity}}": n{{.Initial}}})
+	c.JSON(http.StatusCreated, gin.H{"{{.LowerEntity}}": n{{.Initial}}})
 }
 
 func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
@@ -67,7 +67,7 @@ func (h {{.Entity}}Handler) Delete{{.Entity}}(c *gin.Context) {
 }
 
 func (h {{.Entity}}Handler) List(c *gin.Context) {
-	{{.Initial}}s, err := h.{{.LowerEntity}}Service.List(nil, r)
+	{{.Initial}}s, err := h.{{.LowerEntity}}Service.List(nil)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

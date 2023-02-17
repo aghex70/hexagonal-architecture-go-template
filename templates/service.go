@@ -57,7 +57,7 @@ func (s {{.Entity}}Service) Delete(ctx context.Context, r *http.Request, req por
 	return nil
 }
 
-func (s {{.Entity}}Service) List(ctx context.Context, r *http.Request) ([]domain.{{.Entity}}, error) {
+func (s {{.Entity}}Service) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
 	{{.Initial}}s, err := s.{{.LowerEntity}}Repository.List(ctx)
 	if err != nil {
 		return []domain.{{.Entity}}{}, err

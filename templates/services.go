@@ -15,7 +15,7 @@ var ServicesRepeatTemplate = `type {{.Entity}}Servicer interface {
 	Update(ctx context.Context, r Update{{.Entity}}Request) (domain.{{.Entity}}, error)
 	Get(ctx context.Context, r *http.Request, req Get{{.Entity}}Request) (domain.{{.Entity}}, error)
 	Delete(ctx context.Context, r *http.Request, req Delete{{.Entity}}Request) error
-	List(ctx context.Context, r *http.Request) ([]domain.{{.Entity}}, error)
+	List(ctx context.Context) ([]domain.{{.Entity}}, error)
 }
 
 `
