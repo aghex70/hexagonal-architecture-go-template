@@ -3,10 +3,10 @@ package templates
 var RequestsStartTemplate = `package ports
 
 import "time"
-
 `
 
-var RequestsRepeatTemplate = `type Create{{.Entity}}Request struct {
+var RequestsRepeatTemplate = `
+type Create{{.Entity}}Request struct {
 	CreationDate    time.Time 	` + "`json:\"creationDate\"`" + `
 	Name       		string 		` + "`json:\"name\"`" + `
 }

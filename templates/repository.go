@@ -77,7 +77,7 @@ func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Enti
 	}
 
 	for _, {{.Initial}} := range {{.Initial}}s {
-		{{.Initial}}{{.Initial}}:= {{.Initial}}.ToDto()
+		{{.Initial}}{{.Initial}} := {{.Initial}}.ToDto()
 		{{.Initial}}{{.Initial}}s = append({{.Initial}}{{.Initial}}s, {{.Initial}}{{.Initial}})
 	}
 	return {{.Initial}}{{.Initial}}s, nil
