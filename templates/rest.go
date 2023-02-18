@@ -40,9 +40,9 @@ const StartServerHandlersTemplate = `	// {{.TableSuffix}}
 const NewRestServerTemplate = `	return nil
 }
 
-func NewRestServer(cfg *config.RestConfig, `
+func NewRestServer(cfg *config.RestConfig `
 
-const NewRestServerParamsTemplate = `{{.LowerEntity}}h {{.LowerEntity}}.{{.Entity}}Handler, `
+const NewRestServerParamsTemplate = `, {{.LowerEntity}}h {{.LowerEntity}}.{{.Entity}}Handler`
 
 const NewRestServerParamsContinueTemplate = `) *RestServer {
 	return &RestServer{
