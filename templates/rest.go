@@ -33,7 +33,7 @@ const StartServerHandlersTemplate = `	// {{.TableSuffix}}
 	router.GET("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Get{{.Entity}})
 	router.PUT("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Update{{.Entity}})
 	router.DELETE("/{{.LowerEntity}}/:uuid", s.{{.LowerEntity}}Handler.Delete{{.Entity}})
-	router.GET("/{{.LowerEntity}}", s.{{.LowerEntity}}Handler.List)
+	router.GET("/{{.TableSuffix}}", s.{{.LowerEntity}}Handler.List)
 
 `
 
