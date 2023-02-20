@@ -11,7 +11,7 @@ import (
 
 const ServeImportTemplate = `	{{.LowerEntity}}Service "{{.Module}}/internal/core/services/{{.LowerEntity}}"
 	{{.LowerEntity}}Handler "{{.Module}}/internal/handlers/{{.LowerEntity}}"
-	{{.LowerEntity}}Repository "{{.Module}}/internal/repositories/{{.LowerEntity}}"
+	{{.LowerEntity}}Repository "{{.Module}}/internal/stores/{{.LowerEntity}}"
 `
 
 const ServeCommandTemplate = `)

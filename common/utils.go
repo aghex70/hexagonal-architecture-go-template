@@ -133,7 +133,7 @@ func GenerateBackendStubs(pp string) error {
 		PortsDirectory,
 		BackendServicesDirectory,
 		HandlersDirectory,
-		RepositoriesDirectory,
+		StoresDirectory,
 		HandlersDirectory,
 		CommandDirectory,
 		HandlersDirectory,

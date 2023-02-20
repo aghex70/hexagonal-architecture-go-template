@@ -217,15 +217,15 @@ func main() {
 				panic(err)
 			}
 
-			// Repositories
+			// gorm repositories
 			if sequel == true {
-				repositoryPath := projectPath + common.BackendDirectory + common.RepositoriesDirectory + le + "/"
+				repositoryPath := projectPath + common.BackendDirectory + common.StoresDirectory + le + "/"
 				err = common.CreateDirectory(repositoryPath)
 				if err != nil {
 					panic(err)
 				}
 
-				repositoryFileConfiguration := templates.GetRepositoryFileConfiguration(tc)
+				repositoryFileConfiguration := templates.GetGormRepositoryFileConfiguration(tc)
 				err = common.GenerateFile(repositoryPath+common.GormFileName, common.GolangFileExtension, repositoryFileConfiguration)
 				if err != nil {
 					panic(err)
@@ -293,6 +293,14 @@ func main() {
 		servicesFileConfigurations := templates.GetServicesFileConfiguration(entities, tc)
 		servicesPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.ServicesFileName
 		err = common.GenerateFile(servicesPath, common.GolangFileExtension, servicesFileConfigurations)
+		if err != nil {
+			panic(err)
+		}
+
+		// repository
+		repositoryFileConfigurations := templates.GetRepositoryFileConfiguration(entities, tc)
+		repositoryPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.RepositoriesFileName
+		err = common.GenerateFile(repositoryPath, common.GolangFileExtension, repositoryFileConfigurations)
 		if err != nil {
 			panic(err)
 		}

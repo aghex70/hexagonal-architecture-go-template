@@ -6,12 +6,12 @@ import (
 	"context"
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
-	"{{.Module}}/internal/repositories/{{.LowerEntity}}"
+	"{{.Module}}/internal/stores"
 	"time"
 )
 
 type {{.Entity}}Service struct {
-	{{.LowerEntity}}Repository   *{{.LowerEntity}}.{{.Entity}}GormRepository
+	{{.LowerEntity}}Repository   stores.{{.Entity}}Repository
 }
 
 func (s {{.Entity}}Service) Create(ctx context.Context, r ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
@@ -64,7 +64,7 @@ func (s {{.Entity}}Service) List(ctx context.Context) ([]domain.{{.Entity}}, err
 	return {{.Initial}}s, nil
 }
 
-func New{{.Entity}}Service({{.Initial}}r *{{.LowerEntity}}.{{.Entity}}GormRepository) ({{.Entity}}Service, error) {
+func New{{.Entity}}Service({{.Initial}}r stores.{{.Entity}}Repository) ({{.Entity}}Service, error) {
 	return {{.Entity}}Service{
 		{{.LowerEntity}}Repository:      {{.Initial}}r,
 	}, nil
