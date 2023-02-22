@@ -16,7 +16,6 @@ type {{.Entity}}Service struct {
 
 func (s {{.Entity}}Service) Create(ctx context.Context, r ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
 	{{.Initial}}{{.Initial}} := domain.{{.Entity}}{
-		CreationDate: time.Now(),
 		Name: 		  r.Name,
 	}
 	ne, err := s.{{.LowerEntity}}Repository.Create(ctx, {{.Initial}}{{.Initial}})
@@ -30,7 +29,6 @@ func (s {{.Entity}}Service) Create(ctx context.Context, r ports.Create{{.Entity}
 func (s {{.Entity}}Service) Update(ctx context.Context, r ports.Update{{.Entity}}Request) (domain.{{.Entity}}, error) {
 	{{.Initial}}{{.Initial}} := domain.{{.Entity}}{
 		Id:                 r.Id,
-		UpdateDate: 		time.Now(),
 		Name: 		  		r.Name,
 	}
 	u{{.Initial}}, err := s.{{.LowerEntity}}Repository.Update(ctx, {{.Initial}}{{.Initial}})

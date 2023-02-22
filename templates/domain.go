@@ -7,8 +7,8 @@ import "time"
 type {{.Entity}} struct {
 	Id				string		` + "`json:\"id\"`" + `
 	Name			string		` + "`json:\"name\"`" + `
-	CreationDate	time.Time	` + "`json:\"creationDate\"`" + `
-	UpdateDate		time.Time	` + "`json:\"updateDate\"`" + `
+	CreatedAt		time.Time	` + "`json:\"createdAt\"`" + `
+	UpdatedAt		time.Time	` + "`json:\"updatedAt\"`" + `
 }
 `
 

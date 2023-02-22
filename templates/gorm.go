@@ -20,8 +20,8 @@ type {{.Entity}}GormRepository struct {
 type {{.Entity}} struct {
 	Id            string     ` + "`gorm:\"primaryKey;column:id\"`" + `
 	Name          string     ` + "`gorm:\"column:name\"`" + `
-	CreationDate  time.Time  ` + "`gorm:\"column:creation_date;autoCreateTime\"`" + `
-	UpdateDate    time.Time  ` + "`gorm:\"column:update_date\"`" + `
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 type Tabler interface {
@@ -45,7 +45,6 @@ func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} do
 func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
 	u{{.Initial}} := fromDto({{.Initial}})
 	result := gr.DB.Model(&u{{.Initial}}).Where({{.Entity}}{Id: u{{.Initial}}.Id}).Updates(map[string]interface{}{
-		"update_date": u{{.Initial}}.UpdateDate,
 		"name": u{{.Initial}}.Name,
 	})
 
@@ -106,18 +105,18 @@ func New{{.Entity}}GormRepository(db *gorm.DB) (*{{.Entity}}GormRepository, erro
 func ({{.Initial}}{{.Initial}} {{.Entity}}) ToDto() domain.{{.Entity}} {
 	return domain.{{.Entity}}{
 		Name: 		  {{.Initial}}{{.Initial}}.Name,
-		CreationDate: {{.Initial}}{{.Initial}}.CreationDate,
+		CreatedAt:    {{.Initial}}{{.Initial}}.CreatedAt,
 		Id:           {{.Initial}}{{.Initial}}.Id,
-		UpdateDate:   {{.Initial}}{{.Initial}}.UpdateDate,
+		UpdateAt:     {{.Initial}}{{.Initial}}.UpdateAt,
 	}
 }
 
 func fromDto({{.Initial}}{{.Initial}} domain.{{.Entity}}) {{.Entity}} {
 	return {{.Entity}}{
 		Name: 		  {{.Initial}}{{.Initial}}.Name,
-		CreationDate: {{.Initial}}{{.Initial}}.CreationDate,
+		CreatedAt:    {{.Initial}}{{.Initial}}.CreatedAt,
 		Id:           {{.Initial}}{{.Initial}}.Id,
-		UpdateDate:   {{.Initial}}{{.Initial}}.UpdateDate,
+		UpdatedAt:    {{.Initial}}{{.Initial}}.UpdatedAt,
 	}
 }
 `
