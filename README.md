@@ -5,6 +5,7 @@ A command line utility which aims to create an hexagonal architecture templater 
 ## Features
  - Dockerized architecture generation.
  - Backend generation with different layers: domain, services & repositories.
+ - Swagger 2.0 documentation generation.
  - React frontend generation (WIP)
  - Layers interface generation.
  - Basic CRUD operations implemented for handlers, services & repositories.
