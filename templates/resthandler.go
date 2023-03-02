@@ -4,11 +4,11 @@ const RestHandlerTemplate = `package {{.LowerEntity}}
 
 import (
     "github.com/gin-gonic/gin"
+	_ "{{.Module}}/docs"
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
 	"{{.Module}}/internal/handlers"
 	"net/http"
-	_ "{{.Module}}/docs"
 )
 
 type {{.Entity}}Handler struct {
