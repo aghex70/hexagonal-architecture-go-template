@@ -1,8 +1,6 @@
 package templates
 
 var RequestsStartTemplate = `package ports
-
-import "time"
 `
 
 var RequestsRepeatTemplate = `

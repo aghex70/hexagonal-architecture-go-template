@@ -299,7 +299,7 @@ func main() {
 
 		// repository
 		repositoryFileConfigurations := templates.GetRepositoryFileConfiguration(entities, tc)
-		repositoryPath := projectPath + common.BackendDirectory + common.PortsDirectory + common.RepositoriesFileName
+		repositoryPath := projectPath + common.BackendDirectory + common.StoresDirectory + common.RepositoriesFileName
 		err = common.GenerateFile(repositoryPath, common.GolangFileExtension, repositoryFileConfigurations)
 		if err != nil {
 			panic(err)

@@ -1,11 +1,12 @@
 package templates
 
-var RepositoryImportTemplate = `package stores
+var RepositoryImportTemplate = `package ports
 
 import (
 	"context"
 	"{{.Module}}/internal/core/domain"
 )
+
 `
 
 var RepositoryRepeatTemplate = `type {{.Entity}}Repository interface {
@@ -25,7 +26,7 @@ func GetRepositoryFileConfiguration(entities []string, tc TemplateContext) []Fil
 			TemplateContext: tc,
 		},
 		{
-			Template:        ServicesRepeatTemplate,
+			Template:        RepositoryRepeatTemplate,
 			TemplateContext: tc,
 			Repeat:          true,
 			RepeatEntities:  entities,
