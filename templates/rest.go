@@ -10,8 +10,26 @@ import (
 const RestHandlerImportTemplate = `	"{{.Module}}/internal/handlers/{{.LowerEntity}}"
 `
 
-const RestServerTemplate = `	"github.com/gin-gonic/gin"
+const RestServerTemplate = `	_ "{{.Module}}/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/gin-gonic/gin"
 )
+
+// @title  API
+// @version 1.0
+// @description {{.ProjectName}} API server sample
+
+// @contact.name API Support
+// @contact.url https://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:12001
+// @BasePath /api/v1
+// @query.collection.format multi
 
 type RestServer struct {
 	cfg               config.RestConfig`
@@ -37,7 +55,9 @@ const StartServerHandlersTemplate = `	// {{.TableSuffix}}
 
 `
 
-const NewRestServerTemplate = `	return nil
+const NewRestServerTemplate = `	// swagger documentation
+    router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	return nil
 }
 
 func NewRestServer(cfg *config.RestConfig `

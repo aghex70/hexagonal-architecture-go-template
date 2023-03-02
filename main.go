@@ -445,6 +445,14 @@ func main() {
 		panic(err)
 	}
 
+	// responses
+	responsesFileConfiguration := templates.GetResponsesFileConfiguration(tc)
+	responsesFilePath := projectPath + common.BackendDirectory + common.HandlersDirectory + common.ResponsesFileName
+	err = common.GenerateFile(responsesFilePath, common.GolangFileExtension, responsesFileConfiguration)
+	if err != nil {
+		panic(err)
+	}
+
 	//	backend env
 	backendEnvFileConfiguration := templates.GetBackendEnvFileConfiguration(ec, tc)
 	backendEnvFilePath := projectPath + common.BackendDirectory + common.BackendEnvFileName

@@ -140,6 +140,7 @@ func GenerateBackendStubs(pp string) error {
 		MigrationsDirectory,
 		ConfigDirectory,
 		ServerDirectory,
+		DocumentationDirectory,
 	}
 
 	return GenerateStubs(pp, BackendDirectory, baseBackendDirectories)
