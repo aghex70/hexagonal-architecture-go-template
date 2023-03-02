@@ -63,7 +63,6 @@ A command line utility which aims to create an hexagonal architecture templater 
 │   │   │   │   ├── purchase.go
 │   │   │   │   └── user.go
 │   │   │   ├── ports
-│   │   │   │   ├── repositories.go
 │   │   │   │   ├── requests.go
 │   │   │   │   └── services.go
 │   │   │   └── services
@@ -94,6 +93,7 @@ A command line utility which aims to create an hexagonal architecture templater 
 │   │       │   └── gorm.go
 │   │       ├── purchase
 │   │       │   └── gorm.go
+│   │       ├── repositories.go
 │   │       └── user
 │   │           └── gorm.go
 │   ├── main.go
@@ -103,7 +103,7 @@ A command line utility which aims to create an hexagonal architecture templater 
 │   │       ├── gorm.go
 │   │       ├── migration.go
 │   │       └── migrations
-│   │           └── 20230302071933_initial.sql
+│   │           └── 20230302074121_initial.sql
 │   └── server
 │       ├── grpc.go
 │       ├── rest.go
