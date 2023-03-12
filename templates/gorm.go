@@ -138,6 +138,8 @@ func GenerateTableSuffix(entity string) string {
 		return entity
 	case "y":
 		return entity[:lastLetterIndex] + "ies"
+	case "h":
+		return entity[:lastLetterIndex] + "es"
 	default:
 		return entity + "s"
 	}
