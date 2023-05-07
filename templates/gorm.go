@@ -107,7 +107,7 @@ func ({{.Initial}}{{.Initial}} {{.Entity}}) ToDto() domain.{{.Entity}} {
 		Name: 		  {{.Initial}}{{.Initial}}.Name,
 		CreatedAt:    {{.Initial}}{{.Initial}}.CreatedAt,
 		Id:           {{.Initial}}{{.Initial}}.Id,
-		UpdateAt:     {{.Initial}}{{.Initial}}.UpdateAt,
+		UpdatedAt:     {{.Initial}}{{.Initial}}.UpdatedAt,
 	}
 }
 
