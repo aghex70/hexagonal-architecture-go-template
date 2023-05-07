@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-type {{.Entity}}Handler struct {
+type Handler struct {
 	{{.LowerEntity}}Service ports.{{.Entity}}Servicer
 }
 
@@ -26,7 +26,7 @@ type {{.Entity}}Handler struct {
 // @Failure 400 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.LowerEntity}} [post]
-func (h {{.Entity}}Handler) Create{{.Entity}}(c *gin.Context) {
+func (h Handler) Create{{.Entity}}(c *gin.Context) {
 	var r ports.Create{{.Entity}}Request
 
 	if err := c.ShouldBindJSON(&r); err != nil {
@@ -54,7 +54,7 @@ func (h {{.Entity}}Handler) Create{{.Entity}}(c *gin.Context) {
 // @Failure 400 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.LowerEntity}}/{id} [put]
-func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
+func (h Handler) Update{{.Entity}}(c *gin.Context) {
 	var r ports.Update{{.Entity}}Request
 
 	if err := c.ShouldBindJSON(&r); err != nil {
@@ -83,7 +83,7 @@ func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
 // @Failure 404 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.LowerEntity}}/{id} [get]
-func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
+func (h Handler) Get{{.Entity}}(c *gin.Context) {
 	uuid := c.Param("uuid")
 	{{.Initial}}{{.Initial}}, err := h.{{.LowerEntity}}Service.Get(context.TODO(), uuid)
 	if err != nil {
@@ -105,7 +105,7 @@ func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
 // @Failure 400 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.LowerEntity}}/{id} [delete]
-func (h {{.Entity}}Handler) Delete{{.Entity}}(c *gin.Context) {
+func (h Handler) Delete{{.Entity}}(c *gin.Context) {
 	uuid := c.Param("uuid")
 	err := h.{{.LowerEntity}}Service.Delete(context.TODO(), uuid)
 	if err != nil {
@@ -127,7 +127,7 @@ func (h {{.Entity}}Handler) Delete{{.Entity}}(c *gin.Context) {
 // @Failure 404 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.TableSuffix}} [get]
-func (h {{.Entity}}Handler) List(c *gin.Context) {
+func (h Handler) List(c *gin.Context) {
 	{{.Initial}}s, err := h.{{.LowerEntity}}Service.List(nil)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -137,8 +137,8 @@ func (h {{.Entity}}Handler) List(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"{{.TableSuffix}}": {{.Initial}}s})
 }
 
-func New{{.Entity}}Handler({{.Initial}}s ports.{{.Entity}}Servicer) {{.Entity}}Handler {
-	return {{.Entity}}Handler{
+func NewHandler({{.Initial}}s ports.{{.Entity}}Servicer) Handler {
+	return Handler{
 		{{.LowerEntity}}Service: {{.Initial}}s,
 	}
 }

@@ -6,15 +6,14 @@ import (
 	"context"
 	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
-	"{{.Module}}/internal/stores"
-	"time"
+	{{.LowerEntity}}Store "{{.Module}}/internal/stores/{{.LowerEntity}}"
 )
 
-type {{.Entity}}Service struct {
-	{{.LowerEntity}}Repository   stores.{{.Entity}}Repository
+type Service struct {
+	{{.LowerEntity}}Repository   {{.LowerEntity}}Store.{{.Entity}}GormRepository
 }
 
-func (s {{.Entity}}Service) Create(ctx context.Context, r ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
+func (s Service) Create(ctx context.Context, r ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
 	{{.Initial}}{{.Initial}} := domain.{{.Entity}}{
 		Name: 		  r.Name,
 	}
@@ -26,7 +25,7 @@ func (s {{.Entity}}Service) Create(ctx context.Context, r ports.Create{{.Entity}
 	return ne, nil
 }
 
-func (s {{.Entity}}Service) Update(ctx context.Context, r ports.Update{{.Entity}}Request) (domain.{{.Entity}}, error) {
+func (s Service) Update(ctx context.Context, r ports.Update{{.Entity}}Request) (domain.{{.Entity}}, error) {
 	{{.Initial}}{{.Initial}} := domain.{{.Entity}}{
 		Id:                 r.Id,
 		Name: 		  		r.Name,
@@ -38,7 +37,7 @@ func (s {{.Entity}}Service) Update(ctx context.Context, r ports.Update{{.Entity}
 	return u{{.Initial}}, nil
 }
 
-func (s {{.Entity}}Service) Get(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
+func (s Service) Get(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
 	{{.Initial}}{{.Initial}}, err := s.{{.LowerEntity}}Repository.GetById(ctx, uuid)
 	if err != nil {
 		return domain.{{.Entity}}{}, err
@@ -46,7 +45,7 @@ func (s {{.Entity}}Service) Get(ctx context.Context, uuid string) (domain.{{.Ent
 	return {{.Initial}}{{.Initial}}, nil
 }
 
-func (s {{.Entity}}Service) Delete(ctx context.Context, uuid string) error {
+func (s Service) Delete(ctx context.Context, uuid string) error {
 	err := s.{{.LowerEntity}}Repository.Delete(ctx, uuid)
 	if err != nil {
 		return err
@@ -54,7 +53,7 @@ func (s {{.Entity}}Service) Delete(ctx context.Context, uuid string) error {
 	return nil
 }
 
-func (s {{.Entity}}Service) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
+func (s Service) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
 	{{.Initial}}s, err := s.{{.LowerEntity}}Repository.List(ctx)
 	if err != nil {
 		return []domain.{{.Entity}}{}, err
@@ -62,8 +61,8 @@ func (s {{.Entity}}Service) List(ctx context.Context) ([]domain.{{.Entity}}, err
 	return {{.Initial}}s, nil
 }
 
-func New{{.Entity}}Service({{.Initial}}r stores.{{.Entity}}Repository) ({{.Entity}}Service, error) {
-	return {{.Entity}}Service{
+func NewService({{.Initial}}r {{.LowerEntity}}Store.{{.Entity}}GormRepository) (Service, error) {
+	return Service{
 		{{.LowerEntity}}Repository:      {{.Initial}}r,
 	}, nil
 }
