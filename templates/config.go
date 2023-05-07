@@ -17,7 +17,10 @@ type CacheConfig struct {
 
 func LoadCacheConfig() *CacheConfig {
 	cfg := &CacheConfig{}
-	viper.Unmarshal(cfg)
+	err := viper.Unmarshal(cfg)
+	if err != nil {
+		return nil
+	}
 	return cfg
 }
 `
@@ -45,7 +48,10 @@ type DatabaseConfig struct {
 
 func LoadDatabaseConfig() *DatabaseConfig {
 	cfg := &DatabaseConfig{}
-	viper.Unmarshal(cfg)
+	err := viper.Unmarshal(cfg)
+	if err != nil {
+		return nil
+	}
 	return cfg
 }
 `
@@ -61,7 +67,10 @@ type RestConfig struct {
 
 func LoadRestConfig() *RestConfig {
 	cfg := &RestConfig{}
-	viper.Unmarshal(cfg)
+	err := viper.Unmarshal(cfg)
+	if err != nil {
+		return nil
+	}
 	return cfg
 }
 `
@@ -77,7 +86,10 @@ type GRPCConfig struct {
 
 func LoadGRPCConfig() *GRPCConfig {
 	cfg := &GRPCConfig{}
-	viper.Unmarshal(cfg)
+	err := viper.Unmarshal(cfg)
+	if err != nil {
+		return nil
+	}
 	return cfg
 }
 `
