@@ -34,7 +34,7 @@ func (h {{.Entity}}Handler) Create{{.Entity}}(c *gin.Context) {
 		return
 	}
 
-	n{{.Initial}}, err := h.{{.LowerEntity}}Service.Create(nil, r)
+	n{{.Initial}}, err := h.{{.LowerEntity}}Service.Create(context.TODO(), r)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -62,7 +62,7 @@ func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
 		return
 	}
 
-	u{{.Initial}}, err := h.{{.LowerEntity}}Service.Update(nil, r)
+	u{{.Initial}}, err := h.{{.LowerEntity}}Service.Update(context.TODO(), r)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -85,7 +85,7 @@ func (h {{.Entity}}Handler) Update{{.Entity}}(c *gin.Context) {
 // @Router /{{.LowerEntity}}/{id} [get]
 func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
 	uuid := c.Param("uuid")
-	{{.Initial}}{{.Initial}}, err := h.{{.LowerEntity}}Service.Get(nil, uuid)
+	{{.Initial}}{{.Initial}}, err := h.{{.LowerEntity}}Service.Get(context.TODO(), uuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -107,7 +107,7 @@ func (h {{.Entity}}Handler) Get{{.Entity}}(c *gin.Context) {
 // @Router /{{.LowerEntity}}/{id} [delete]
 func (h {{.Entity}}Handler) Delete{{.Entity}}(c *gin.Context) {
 	uuid := c.Param("uuid")
-	err := h.{{.LowerEntity}}Service.Delete(nil, uuid)
+	err := h.{{.LowerEntity}}Service.Delete(context.TODO(), uuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
