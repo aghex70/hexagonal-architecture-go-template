@@ -3,11 +3,10 @@ package templates
 const RestHandlerTemplate = `package {{.LowerEntity}}
 
 import (
+	"context"
     "github.com/gin-gonic/gin"
 	_ "{{.Module}}/docs"
-	"{{.Module}}/internal/core/domain"
 	"{{.Module}}/internal/core/ports"
-	"{{.Module}}/internal/handlers"
 	"net/http"
 )
 
