@@ -116,7 +116,7 @@ import (
 )
 
 const (
-	CONFIG_NAME string = ".env.backend"
+	CONFIG_NAME string = ".env"
 	CONFIG_TYPE string = "env"
 	CONFIG_PATH string = "./"
 )

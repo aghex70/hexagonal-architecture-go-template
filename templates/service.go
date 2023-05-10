@@ -10,7 +10,7 @@ import (
 )
 
 type Service struct {
-	{{.LowerEntity}}Repository   {{.LowerEntity}}Store.{{.Entity}}GormRepository
+	{{.LowerEntity}}Repository   *{{.LowerEntity}}Store.{{.Entity}}GormRepository
 }
 
 func (s Service) Create(ctx context.Context, r ports.Create{{.Entity}}Request) (domain.{{.Entity}}, error) {
@@ -61,7 +61,7 @@ func (s Service) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
 	return {{.Initial}}s, nil
 }
 
-func NewService({{.Initial}}r {{.LowerEntity}}Store.{{.Entity}}GormRepository) (Service, error) {
+func NewService({{.Initial}}r *{{.LowerEntity}}Store.{{.Entity}}GormRepository) (Service, error) {
 	return Service{
 		{{.LowerEntity}}Repository:      {{.Initial}}r,
 	}, nil

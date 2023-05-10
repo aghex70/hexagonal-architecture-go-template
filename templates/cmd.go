@@ -31,8 +31,8 @@ const ServeRepositoryTemplate = `			{{.LowerEntity}}R, _ := {{.LowerEntity}}Repo
 `
 
 const ServeServiceAndHandlerTemplate = `
-			{{.LowerEntity}}S, _ := {{.LowerEntity}}Service.New{{.Entity}}Service({{.LowerEntity}}R)
-			{{.LowerEntity}}H := {{.LowerEntity}}Handler.New{{.Entity}}Handler({{.LowerEntity}}S)
+			{{.LowerEntity}}S, _ := {{.LowerEntity}}Service.NewService({{.LowerEntity}}R)
+			{{.LowerEntity}}H := {{.LowerEntity}}Handler.NewHandler({{.LowerEntity}}S)
 `
 
 const ServeInitializeTemplate = `
