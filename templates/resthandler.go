@@ -127,7 +127,7 @@ func (h Handler) Delete{{.Entity}}(c *gin.Context) {
 // @Failure 500 {object} handlers.JSONErrorResponse{message=string, statusCode=int, message=string}
 // @Router /{{.TableSuffix}} [get]
 func (h Handler) List(c *gin.Context) {
-	{{.Initial}}s, err := h.{{.LowerEntity}}Service.List(nil)
+	{{.Initial}}s, err := h.{{.LowerEntity}}Service.List(context.TODO())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
