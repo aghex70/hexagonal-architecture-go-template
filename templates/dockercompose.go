@@ -4,6 +4,7 @@ var dockerComposeBaseTemplate = `version: '3.9'
 
 services:
   backend:
+	container_name: {{.ProjectName}}-backend
     build:
       context: backend
       dockerfile: Dockerfile
@@ -19,7 +20,8 @@ services:
 `
 
 var dockerComposeFrontendTemplate = `  frontend:
-    build:
+	container_name: {{.ProjectName}}-backend
+	build:
       context: frontend
       dockerfile: Dockerfile
     command: ["npm", "run", "start:prod"]

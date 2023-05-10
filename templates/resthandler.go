@@ -4,7 +4,7 @@ const RestHandlerTemplate = `package {{.LowerEntity}}
 
 import (
 	"context"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 	_ "{{.Module}}/docs"
 	"{{.Module}}/internal/core/ports"
 	"net/http"
