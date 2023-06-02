@@ -31,7 +31,7 @@ var dockerComposeFrontendTemplate = `  frontend:
       - "3000:3000"
     stdin_open: true
     volumes:
-      - ./backend:/{{.ProjectName}}/backend
+      - ./backend:/{{.ProjectName}}/frontend
 
 `
 
