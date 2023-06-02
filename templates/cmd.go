@@ -27,7 +27,7 @@ func ServeCommand(cfg *config.Config) *cobra.Command {
 			}
 `
 
-const ServeRepositoryTemplate = `			{{.LowerEntity}}R, _ := {{.LowerEntity}}Repository.New{{.Entity}}GormRepository(gdb)
+const ServeRepositoryTemplate = `			{{.LowerEntity}}R, _ := {{.LowerEntity}}Repository.NewGormRepository(gdb)
 `
 
 const ServeServiceAndHandlerTemplate = `

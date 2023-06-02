@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-type {{.Entity}}GormRepository struct {
+type GormRepository struct {
 	*gorm.DB
 	SqlDb  *sql.DB
 	logger *log.Logger
@@ -33,7 +33,7 @@ func ({{.Entity}}) TableName() string {
 	return "{{.ProjectName}}_{{.TableSuffix}}"
 }
 
-func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
+func (gr *GormRepository) Create(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
 	n{{.Initial}} := fromDto({{.Initial}})
 	result := gr.DB.Create(&n{{.Initial}})
 	if result.Error != nil {
@@ -42,7 +42,7 @@ func (gr *{{.Entity}}GormRepository) Create(ctx context.Context, {{.Initial}} do
 	return n{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
+func (gr *GormRepository) Update(ctx context.Context, {{.Initial}} domain.{{.Entity}}) (domain.{{.Entity}}, error) {
 	u{{.Initial}} := fromDto({{.Initial}})
 	result := gr.DB.Model(&u{{.Initial}}).Where({{.Entity}}{Id: u{{.Initial}}.Id}).Updates(map[string]interface{}{
 		"name": u{{.Initial}}.Name,
@@ -58,7 +58,7 @@ func (gr *{{.Entity}}GormRepository) Update(ctx context.Context, {{.Initial}} do
 	return u{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
+func (gr *GormRepository) GetById(ctx context.Context, uuid string) (domain.{{.Entity}}, error) {
 	var {{.Initial}}{{.Initial}} {{.Entity}}
 	result := gr.DB.Where(&{{.Entity}}{Id: uuid}).First(&{{.Initial}}{{.Initial}})
 	if result.Error != nil {
@@ -67,7 +67,7 @@ func (gr *{{.Entity}}GormRepository) GetById(ctx context.Context, uuid string) (
 	return {{.Initial}}{{.Initial}}.ToDto(), nil
 }
 
-func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
+func (gr *GormRepository) List(ctx context.Context) ([]domain.{{.Entity}}, error) {
 	var {{.Initial}}s []{{.Entity}}
 	var {{.Initial}}{{.Initial}}s []domain.{{.Entity}}
 	result := gr.DB.Find(&{{.Initial}}s)
@@ -82,7 +82,7 @@ func (gr *{{.Entity}}GormRepository) List(ctx context.Context) ([]domain.{{.Enti
 	return {{.Initial}}{{.Initial}}s, nil
 }
 
-func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, uuid string) error {
+func (gr *GormRepository) Delete(ctx context.Context, uuid string) error {
 	{{.Initial}}{{.Initial}} := {{.Entity}}{Id: uuid}
 	result := gr.DB.Delete(&{{.Initial}}{{.Initial}})
 	if result.Error != nil {
@@ -96,8 +96,8 @@ func (gr *{{.Entity}}GormRepository) Delete(ctx context.Context, uuid string) er
 	return nil
 }
 
-func New{{.Entity}}GormRepository(db *gorm.DB) (*{{.Entity}}GormRepository, error) {
-	return &{{.Entity}}GormRepository{
+func NewGormRepository(db *gorm.DB) (*GormRepository, error) {
+	return &GormRepository{
 		DB: db,
 	}, nil
 }
