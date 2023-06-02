@@ -20,7 +20,7 @@ services:
 `
 
 var dockerComposeFrontendTemplate = `  frontend:
-	container_name: {{.ProjectName}}-backend
+	container_name: {{.ProjectName}}-frontend
 	build:
       context: frontend
       dockerfile: Dockerfile
