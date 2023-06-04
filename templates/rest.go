@@ -35,7 +35,7 @@ type RestServer struct {
 	cfg               config.RestConfig`
 
 const RestServerHandlerTemplate = `
-	{{.LowerEntity}}Handler {{.LowerEntity}}.{{.Entity}}Handler
+	{{.LowerEntity}}Handler {{.LowerEntity}}.Handler
 	{{.LowerEntity}}Service ports.{{.Entity}}Servicer`
 
 const StartServerTemplate = `
@@ -47,11 +47,11 @@ func (s *RestServer) StartServer() error {
 `
 
 const StartServerHandlersTemplate = `	// {{.TableSuffix}}
-	router.POST("/{{.TableSuffix}}", s.Handler.Create{{.Entity}})
-	router.GET("/{{.TableSuffix}}/:uuid", s.Handler.Get{{.Entity}})
-	router.PUT("/{{.TableSuffix}}/:uuid", s.Handler.Update{{.Entity}})
-	router.DELETE("/{{.TableSuffix}}/:uuid", s.Handler.Delete{{.Entity}})
-	router.GET("/{{.TableSuffix}}", s.Handler.List)
+	router.POST("/{{.TableSuffix}}", s.{{.LowerEntity}}Handler.Create{{.Entity}})
+	router.GET("/{{.TableSuffix}}/:uuid", s.{{.LowerEntity}}Handler.Get{{.Entity}})
+	router.PUT("/{{.TableSuffix}}/:uuid", s.{{.LowerEntity}}Handler.Update{{.Entity}})
+	router.DELETE("/{{.TableSuffix}}/:uuid", s.{{.LowerEntity}}Handler.Delete{{.Entity}})
+	router.GET("/{{.TableSuffix}}", s.{{.LowerEntity}}Handler.List)
 
 `
 
